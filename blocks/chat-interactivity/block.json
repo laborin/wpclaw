@@ -1,0 +1,145 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wp-native-agent/chat-interactivity",
+	"version": "0.1.0",
+	"title": "WP Native Agent Chat (Interactivity)",
+	"category": "widgets",
+	"icon": "format-chat",
+	"description": "Interactivity API frontend variant for WP Native Agent chat.",
+	"textdomain": "wp-native-agent",
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+		"placeholder": {
+			"type": "string",
+			"default": "Ask something..."
+		},
+		"systemPromptOverride": {
+			"type": "string",
+			"default": ""
+		},
+		"systemPromptOverridesGlobal": {
+			"type": "boolean",
+			"default": true
+		},
+		"enabledTools": {
+			"type": "array",
+			"default": []
+		},
+		"hideIfDisallowed": {
+			"type": "boolean",
+			"default": false
+		},
+		"theme": {
+			"type": "string",
+			"default": "auto"
+		},
+		"maxHeight": {
+			"type": "string",
+			"default": "600px"
+		},
+		"fontFamily": {
+			"type": "string",
+			"default": "\"Manrope\", \"Avenir Next\", \"Segoe UI\", sans-serif"
+		},
+		"fontSize": {
+			"type": "string",
+			"default": "16px"
+		},
+		"lineHeight": {
+			"type": "string",
+			"default": "1.45"
+		},
+		"borderRadius": {
+			"type": "string",
+			"default": "18px"
+		},
+		"bubbleRadius": {
+			"type": "string",
+			"default": "14px"
+		},
+		"outerMargin": {
+			"type": "string",
+			"default": "0px"
+		},
+		"chatPadding": {
+			"type": "string",
+			"default": "14px"
+		},
+		"messageGap": {
+			"type": "string",
+			"default": "12px"
+		},
+		"chatBackgroundColor": {
+			"type": "string",
+			"default": "#f8fafc"
+		},
+		"borderColor": {
+			"type": "string",
+			"default": "#cbd5e1"
+		},
+		"headerBackgroundColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"headerTextColor": {
+			"type": "string",
+			"default": "#0f172a"
+		},
+		"userBubbleColor": {
+			"type": "string",
+			"default": "#dbeafe"
+		},
+		"userTextColor": {
+			"type": "string",
+			"default": "#1e293b"
+		},
+		"assistantBubbleColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"assistantTextColor": {
+			"type": "string",
+			"default": "#0f172a"
+		},
+		"toolBubbleColor": {
+			"type": "string",
+			"default": "#f1f5f9"
+		},
+		"toolTextColor": {
+			"type": "string",
+			"default": "#0f172a"
+		},
+		"composerBackgroundColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"inputBackgroundColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"inputTextColor": {
+			"type": "string",
+			"default": "#0f172a"
+		},
+		"buttonBackgroundColor": {
+			"type": "string",
+			"default": "#0f172a"
+		},
+		"buttonTextColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"accentColor": {
+			"type": "string",
+			"default": "#2563eb"
+		}
+	},
+	"editorScript": "file:./build/index.js",
+	"editorStyle": "file:./build/index.css",
+	"style": "file:./build/style-index.css",
+	"viewScript": "file:./build/view.js",
+	"viewStyle": "file:./build/view.css"
+}
