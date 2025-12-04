@@ -1,0 +1,14 @@
+/vendor/
+/node_modules/
+/dist/
+/build/
+/.wp-env/
+/.idea/
+.vscode/
+.cache/
+.env
+.env.*
+*.log
+.DS_Store
+composer.lock
+package-lock.json
