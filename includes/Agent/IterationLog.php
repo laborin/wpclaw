@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Agent;
+namespace WPClaw\Agent;
 
 /**
  * Iteration telemetry accumulator used by the loop.

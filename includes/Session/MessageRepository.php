@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Session;
+namespace WPClaw\Session;
 
 use InvalidArgumentException;
 use JsonException;
 use RuntimeException;
 
 /**
- * Repository for messages persisted in wpna_messages table.
+ * Repository for messages persisted in wpclaw_messages table.
  */
 final class MessageRepository
 {
@@ -185,7 +185,7 @@ final class MessageRepository
             throw new InvalidArgumentException('wpdb prefix is required.');
         }
 
-        return $prefix . 'wpna_messages';
+        return $prefix . 'wpclaw_messages';
     }
 
     private function assert_positive(int $value, string $name): void

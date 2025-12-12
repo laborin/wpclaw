@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Rest;
+namespace WPClaw\Rest;
 
-use WPNativeAgent\Security\CancelSignal;
+use WPClaw\Security\CancelSignal;
 
 /**
  * Cancel endpoint that flags current user session as cancelled.

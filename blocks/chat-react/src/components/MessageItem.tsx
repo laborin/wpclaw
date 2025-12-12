@@ -7,7 +7,7 @@ type MessageItemProps = {
 function MessageItem( { message }: MessageItemProps ) {
 	return (
 		<div
-			className={ `wpna-message wpna-message-${ message.role } wpna-timeline-entry` }
+			className={ `wpclaw-message wpclaw-message-${ message.role } wpclaw-timeline-entry` }
 		>
 			<header>{ message.role }</header>
 			<p>{ message.content }</p>

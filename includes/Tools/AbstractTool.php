@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Tools;
+namespace WPClaw\Tools;
 
 /**
  * Thin base class with schema validation helpers for built in tools.

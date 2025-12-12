@@ -1,5 +1,5 @@
 import { useCallback, useState } from '@wordpress/element';
-import { WpNativeAgentClient } from '../../../../shared/api-client';
+import { WpClawClient } from '../../../../shared/api-client';
 import type { SystemPromptMode } from '../../../../shared/types';
 
 type SendPayload = {
@@ -18,9 +18,7 @@ type UseChatStreamResult = {
 	send: ( payload: SendPayload ) => Promise< boolean >;
 };
 
-export function useChatStream(
-	client: WpNativeAgentClient
-): UseChatStreamResult {
+export function useChatStream( client: WpClawClient ): UseChatStreamResult {
 	const [ isSending, setIsSending ] = useState( false );
 	const [ error, setErrorState ] = useState< string | null >( null );
 

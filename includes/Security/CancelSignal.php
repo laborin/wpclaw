@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Security;
+namespace WPClaw\Security;
 
 /**
  * Cancel flag object used to stop long running streaming operations.
@@ -112,6 +112,6 @@ final class CancelSignal
 
     private static function session_key(int $sessionId): string
     {
-        return 'wpna_cancel_' . $sessionId;
+        return 'wpclaw_cancel_' . $sessionId;
     }
 }

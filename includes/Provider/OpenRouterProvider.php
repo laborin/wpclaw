@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Provider;
+namespace WPClaw\Provider;
 
 use RuntimeException;
-use WPNativeAgent\Security\CancelSignal;
+use WPClaw\Security\CancelSignal;
 
 /**
  * OpenRouter provider that normalizes SSE events for the agent loop.

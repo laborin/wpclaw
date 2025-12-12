@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Security;
+namespace WPClaw\Security;
 
 /**
  * Input sanitizer for REST payload fields.

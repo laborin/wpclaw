@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent;
+namespace WPClaw;
 
 /**
  * Deactivation hook class used to keep lifecycle extension points in one place.

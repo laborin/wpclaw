@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Settings;
+namespace WPClaw\Settings;
 
-use WPNativeAgent\Security\KeyVault;
+use WPClaw\Security\KeyVault;
 
 /**
  * Typed option access object for plugin settings.
  */
 final class Options
 {
-    public const OPTION_API_KEY = 'wp_native_agent_openrouter_api_key';
-    public const OPTION_DEFAULT_MODEL = 'wp_native_agent_default_model';
-    public const OPTION_SYSTEM_PROMPT = 'wp_native_agent_system_prompt';
-    public const OPTION_ALLOWED_CHAT_ROLES = 'wp_native_agent_allowed_chat_roles';
-    public const OPTION_ALLOWED_TOOL_ROLES = 'wp_native_agent_allowed_tool_roles';
-    public const OPTION_MAX_ITERATIONS = 'wp_native_agent_max_iterations';
-    public const OPTION_MAX_RESPONSE_TOKENS = 'wp_native_agent_max_response_tokens';
-    public const OPTION_ENABLED_TOOLS = 'wp_native_agent_enabled_tools';
-    public const OPTION_RATE_USER_MINUTE = 'wp_native_agent_rate_user_minute';
-    public const OPTION_RATE_USER_DAY = 'wp_native_agent_rate_user_day';
-    public const OPTION_RATE_IP_MINUTE = 'wp_native_agent_rate_ip_minute';
-    public const OPTION_CONTEXT_WINDOWS = 'wp_native_agent_context_windows';
-    public const OPTION_DELETE_ON_UNINSTALL = 'wp_native_agent_delete_data_on_uninstall';
+    public const OPTION_API_KEY = 'wpclaw_openrouter_api_key';
+    public const OPTION_DEFAULT_MODEL = 'wpclaw_default_model';
+    public const OPTION_SYSTEM_PROMPT = 'wpclaw_system_prompt';
+    public const OPTION_ALLOWED_CHAT_ROLES = 'wpclaw_allowed_chat_roles';
+    public const OPTION_ALLOWED_TOOL_ROLES = 'wpclaw_allowed_tool_roles';
+    public const OPTION_MAX_ITERATIONS = 'wpclaw_max_iterations';
+    public const OPTION_MAX_RESPONSE_TOKENS = 'wpclaw_max_response_tokens';
+    public const OPTION_ENABLED_TOOLS = 'wpclaw_enabled_tools';
+    public const OPTION_RATE_USER_MINUTE = 'wpclaw_rate_user_minute';
+    public const OPTION_RATE_USER_DAY = 'wpclaw_rate_user_day';
+    public const OPTION_RATE_IP_MINUTE = 'wpclaw_rate_ip_minute';
+    public const OPTION_CONTEXT_WINDOWS = 'wpclaw_context_windows';
+    public const OPTION_DELETE_ON_UNINSTALL = 'wpclaw_delete_data_on_uninstall';
 
     private KeyVault $keyVault;
 

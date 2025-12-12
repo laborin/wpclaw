@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "wp-native-agent/chat-interactivity",
+	"name": "wpclaw/chat-interactivity",
 	"version": "0.1.0",
-	"title": "WP Native Agent Chat (Interactivity)",
+	"title": "WPClaw Chat (Interactivity)",
 	"category": "widgets",
 	"icon": "format-chat",
-	"description": "Interactivity API frontend variant for WP Native Agent chat.",
-	"textdomain": "wp-native-agent",
+	"description": "Interactivity API frontend variant for WPClaw chat.",
+	"textdomain": "wpclaw",
 	"supports": {
 		"html": false
 	},

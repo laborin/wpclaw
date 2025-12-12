@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Rest;
+namespace WPClaw\Rest;
 
-use WPNativeAgent\Security\RoleGate;
+use WPClaw\Security\RoleGate;
 
 /**
  * Shared access guard for REST endpoints.

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Session;
+namespace WPClaw\Session;
 
 use InvalidArgumentException;
 use RuntimeException;
 
 /**
- * Repository for user chat sessions persisted in wpna_sessions table.
+ * Repository for user chat sessions persisted in wpclaw_sessions table.
  */
 final class SessionRepository
 {
@@ -188,7 +188,7 @@ final class SessionRepository
             throw new InvalidArgumentException('wpdb prefix is required.');
         }
 
-        return $prefix . 'wpna_sessions';
+        return $prefix . 'wpclaw_sessions';
     }
 
     /**

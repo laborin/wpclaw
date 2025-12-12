@@ -57,7 +57,7 @@ function parseConfig( element: HTMLElement ): RootConfig {
 
 function mount() {
 	const nodes = document.querySelectorAll< HTMLElement >(
-		'[data-wpna-react-chat]'
+		'[data-wpclaw-react-chat]'
 	);
 
 	nodes.forEach( ( node ) => {

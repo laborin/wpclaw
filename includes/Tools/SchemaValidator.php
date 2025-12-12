@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Tools;
+namespace WPClaw\Tools;
 
 /**
  * Minimal json schema validator for tool input payloads.

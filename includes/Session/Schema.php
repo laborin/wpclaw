@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Session;
+namespace WPClaw\Session;
 
 use wpdb;
 
@@ -28,12 +28,12 @@ final class Schema
 
     public function sessions_table_name(): string
     {
-        return $this->wpdb->prefix . 'wpna_sessions';
+        return $this->wpdb->prefix . 'wpclaw_sessions';
     }
 
     public function messages_table_name(): string
     {
-        return $this->wpdb->prefix . 'wpna_messages';
+        return $this->wpdb->prefix . 'wpclaw_messages';
     }
 
     private function sessions_table_sql(): string

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Rest;
+namespace WPClaw\Rest;
 
 /**
  * History endpoint for fetching and deleting current user chat history.

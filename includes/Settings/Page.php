@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Settings;
+namespace WPClaw\Settings;
 
-use WPNativeAgent\Session\MessageRepository;
-use WPNativeAgent\Session\SessionRepository;
+use WPClaw\Session\MessageRepository;
+use WPClaw\Session\SessionRepository;
 
 /**
  * Admin settings page and tab renderer.
@@ -21,16 +21,16 @@ final class Page
     {
         add_action('admin_menu', [$this, 'register_page']);
         add_action('admin_init', [$this->fields, 'register']);
-        add_action('admin_post_wpna_clear_all_history', [$this, 'handle_clear_all_history']);
+        add_action('admin_post_wpclaw_clear_all_history', [$this, 'handle_clear_all_history']);
     }
 
     public function register_page(): void
     {
         add_options_page(
-            'WP Native Agent',
-            'WP Native Agent',
+            'WPClaw',
+            'WPClaw',
             'manage_options',
-            'wp-native-agent',
+            'wpclaw',
             [$this, 'render_page']
         );
     }
@@ -51,11 +51,11 @@ final class Page
         ];
 
         $groups = [
-            'provider' => 'wpna_provider',
-            'access' => 'wpna_access',
-            'tools' => 'wpna_tools',
-            'rate-limits' => 'wpna_rate_limits',
-            'data' => 'wpna_data',
+            'provider' => 'wpclaw_provider',
+            'access' => 'wpclaw_access',
+            'tools' => 'wpclaw_tools',
+            'rate-limits' => 'wpclaw_rate_limits',
+            'data' => 'wpclaw_data',
         ];
 
         if (! isset($tabs[$tab])) {
@@ -63,12 +63,12 @@ final class Page
         }
 
         echo '<div class="wrap">';
-        echo '<h1>WP Native Agent</h1>';
+        echo '<h1>WPClaw</h1>';
         echo '<nav class="nav-tab-wrapper">';
 
         foreach ($tabs as $slug => $label) {
             $class = $slug === $tab ? ' nav-tab-active' : '';
-            $url = admin_url('options-general.php?page=wp-native-agent&tab=' . $slug);
+            $url = admin_url('options-general.php?page=wpclaw&tab=' . $slug);
             printf('<a href="%1$s" class="nav-tab%2$s">%3$s</a>', esc_url($url), esc_attr($class), esc_html($label));
         }
 
@@ -92,7 +92,7 @@ final class Page
             wp_die('Not allowed.');
         }
 
-        check_admin_referer('wpna_clear_all_history');
+        check_admin_referer('wpclaw_clear_all_history');
 
         global $wpdb;
         $sessionRepository = new SessionRepository($wpdb);
@@ -100,16 +100,16 @@ final class Page
 
         $deletedMessages = $messageRepository->delete_all();
 
-        $sessionsTable = $wpdb->prefix . 'wpna_sessions';
+        $sessionsTable = $wpdb->prefix . 'wpclaw_sessions';
         $deletedSessions = (int) $wpdb->query("DELETE FROM {$sessionsTable}");
 
         $redirectUrl = add_query_arg(
             [
-                'page' => 'wp-native-agent',
+                'page' => 'wpclaw',
                 'tab' => 'data',
-                'wpna_cleared' => 1,
-                'wpna_deleted_messages' => $deletedMessages,
-                'wpna_deleted_sessions' => $deletedSessions,
+                'wpclaw_cleared' => 1,
+                'wpclaw_deleted_messages' => $deletedMessages,
+                'wpclaw_deleted_sessions' => $deletedSessions,
             ],
             admin_url('options-general.php')
         );
@@ -120,9 +120,9 @@ final class Page
 
     private function render_data_actions(): void
     {
-        if (isset($_GET['wpna_cleared']) && (int) $_GET['wpna_cleared'] === 1) {
-            $deletedMessages = (int) ($_GET['wpna_deleted_messages'] ?? 0);
-            $deletedSessions = (int) ($_GET['wpna_deleted_sessions'] ?? 0);
+        if (isset($_GET['wpclaw_cleared']) && (int) $_GET['wpclaw_cleared'] === 1) {
+            $deletedMessages = (int) ($_GET['wpclaw_deleted_messages'] ?? 0);
+            $deletedSessions = (int) ($_GET['wpclaw_deleted_sessions'] ?? 0);
 
             printf(
                 '<div class="notice notice-success"><p>Cleared %1$d messages and %2$d sessions.</p></div>',
@@ -134,8 +134,8 @@ final class Page
         $actionUrl = admin_url('admin-post.php');
 
         echo '<form method="post" action="' . esc_url($actionUrl) . '" style="margin-top:16px;">';
-        echo '<input type="hidden" name="action" value="wpna_clear_all_history"/>';
-        wp_nonce_field('wpna_clear_all_history');
+        echo '<input type="hidden" name="action" value="wpclaw_clear_all_history"/>';
+        wp_nonce_field('wpclaw_clear_all_history');
         submit_button('Clear All Chat History', 'delete');
         echo '</form>';
     }

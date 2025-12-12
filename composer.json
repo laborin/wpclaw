@@ -1,6 +1,6 @@
 {
-	"name": "emmanuel-laborin/wp-native-agent",
-	"description": "WordPress plugin that embeds a native AI chat agent.",
+	"name": "emmanuel-laborin/wpclaw",
+	"description": "WordPress plugin that embeds the WPClaw AI chat agent.",
 	"type": "wordpress-plugin",
 	"license": "MIT",
 	"require": {
@@ -8,7 +8,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"WPNativeAgent\\": "includes/"
+			"WPClaw\\": "includes/"
 		}
 	},
 	"minimum-stability": "stable",

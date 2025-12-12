@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Tools;
+namespace WPClaw\Tools;
 
 use InvalidArgumentException;
 

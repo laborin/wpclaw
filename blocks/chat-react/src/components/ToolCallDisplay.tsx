@@ -15,8 +15,8 @@ function ToolCallDisplay( { calls, inline = false }: ToolCallDisplayProps ) {
 			key={ call.id }
 			className={
 				inline
-					? 'wpna-tool-call wpna-message wpna-message-tool'
-					: 'wpna-tool-call'
+					? 'wpclaw-tool-call wpclaw-message wpclaw-message-tool'
+					: 'wpclaw-tool-call'
 			}
 		>
 			<summary>{ call.name }</summary>
@@ -39,7 +39,7 @@ function ToolCallDisplay( { calls, inline = false }: ToolCallDisplayProps ) {
 		return <>{ content }</>;
 	}
 
-	return <div className="wpna-tool-calls">{ content }</div>;
+	return <div className="wpclaw-tool-calls">{ content }</div>;
 }
 
 export default ToolCallDisplay;

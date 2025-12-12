@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Provider;
+namespace WPClaw\Provider;
 
-use WPNativeAgent\Security\CancelSignal;
+use WPClaw\Security\CancelSignal;
 
 /**
  * Interface for providers that stream normalized completion events.

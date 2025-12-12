@@ -1,8 +1,8 @@
 # Blocks
 
 ## Block variants
-- `wp-native-agent/chat-react`
-- `wp-native-agent/chat-interactivity`
+- `wpclaw/chat-react`
+- `wpclaw/chat-interactivity`
 
 Both blocks are dynamic. Server renderers enforce role checks and output data attributes used by frontend script.
 

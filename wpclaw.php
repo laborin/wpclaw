@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: WP Native Agent
- * Description: Native AI agent plugin with Gutenberg blocks and server loop.
+ * Plugin Name: WPClaw
+ * Description: WPClaw AI agent plugin with Gutenberg blocks and server loop.
  * Version: 0.1.0
  * Author: Emmanuel Laborin
  * License: MIT
- * Text Domain: wp-native-agent
+ * Text Domain: wpclaw
  * Requires at least: 6.5
  * Requires PHP: 8.1
  */
@@ -22,7 +22,7 @@ if (is_readable($autoload)) {
 } else {
     spl_autoload_register(
         static function (string $class): void {
-            $prefix = 'WPNativeAgent\\';
+            $prefix = 'WPClaw\\';
             if (! str_starts_with($class, $prefix)) {
                 return;
             }
@@ -36,9 +36,9 @@ if (is_readable($autoload)) {
     );
 }
 
-use WPNativeAgent\Activator;
-use WPNativeAgent\Deactivator;
-use WPNativeAgent\Plugin;
+use WPClaw\Activator;
+use WPClaw\Deactivator;
+use WPClaw\Plugin;
 
 register_activation_hook(__FILE__, [Activator::class, 'activate']);
 register_deactivation_hook(__FILE__, [Deactivator::class, 'deactivate']);

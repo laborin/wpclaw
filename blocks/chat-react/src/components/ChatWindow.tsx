@@ -1,6 +1,6 @@
 import type { CSSProperties, UIEventHandler } from 'react';
 import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
-import { WpNativeAgentClient } from '../../../../shared/api-client';
+import { WpClawClient } from '../../../../shared/api-client';
 import {
 	type ChatUiConfig,
 	uiConfigToCssVars,
@@ -42,10 +42,7 @@ function ChatWindow( {
 	nonce,
 	uiConfig,
 }: ChatWindowProps ) {
-	const client = useMemo(
-		() => new WpNativeAgentClient( { nonce } ),
-		[ nonce ]
-	);
+	const client = useMemo( () => new WpClawClient( { nonce } ), [ nonce ] );
 	const history = useHistory( client );
 	const stream = useChatStream( client );
 	const messagesRef = useRef< HTMLDivElement >( null );
@@ -149,13 +146,13 @@ function ChatWindow( {
 
 	return (
 		<div
-			className="wpna-chat-window"
+			className="wpclaw-chat-window"
 			style={ windowStyle }
-			data-wpna-theme={ uiConfig.theme }
+			data-wpclaw-theme={ uiConfig.theme }
 		>
-			<header className="wpna-chat-header">
-				<strong>WP Native Agent</strong>
-				<div className="wpna-chat-actions">
+			<header className="wpclaw-chat-header">
+				<strong>WPClaw</strong>
+				<div className="wpclaw-chat-actions">
 					<button type="button" onClick={ () => void clearHistory() }>
 						Clear history
 					</button>
@@ -165,7 +162,7 @@ function ChatWindow( {
 					/>
 				</div>
 			</header>
-			<div className="wpna-message-list-wrap">
+			<div className="wpclaw-message-list-wrap">
 				<MessageList
 					entries={ history.timeline }
 					listRef={ messagesRef }
@@ -177,7 +174,7 @@ function ChatWindow( {
 				{ ! stickToBottom && history.timeline.length > 0 ? (
 					<button
 						type="button"
-						className="wpna-jump-latest"
+						className="wpclaw-jump-latest"
 						onClick={ jumpToLatest }
 					>
 						Jump to latest
@@ -189,7 +186,7 @@ function ChatWindow( {
 				onSubmit={ send }
 				placeholder={ placeholder }
 			/>
-			{ errorText ? <p className="wpna-error">{ errorText }</p> : null }
+			{ errorText ? <p className="wpclaw-error">{ errorText }</p> : null }
 		</div>
 	);
 }

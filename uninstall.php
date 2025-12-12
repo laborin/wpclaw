@@ -6,7 +6,7 @@ if (! defined('WP_UNINSTALL_PLUGIN')) {
     exit;
 }
 
-$delete_data = get_option('wp_native_agent_delete_data_on_uninstall', false);
+$delete_data = get_option('wpclaw_delete_data_on_uninstall', false);
 if (! $delete_data) {
     return;
 }
@@ -16,11 +16,11 @@ if (! $wpdb instanceof wpdb) {
     return;
 }
 
-$prefix = $wpdb->prefix . 'wpna_';
+$prefix = $wpdb->prefix . 'wpclaw_';
 $wpdb->query("DROP TABLE IF EXISTS {$prefix}sessions");
 $wpdb->query("DROP TABLE IF EXISTS {$prefix}messages");
 
-$option_like = $wpdb->esc_like('wp_native_agent_') . '%';
+$option_like = $wpdb->esc_like('wpclaw_') . '%';
 $options_table = $wpdb->options;
 $wpdb->query(
     $wpdb->prepare(

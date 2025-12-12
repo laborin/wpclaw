@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Tools;
+namespace WPClaw\Tools;
 
-use WPNativeAgent\Agent\Context;
+use WPClaw\Agent\Context;
 
 /**
  * Built in tool that searches published posts by text and filters.

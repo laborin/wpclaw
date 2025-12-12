@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Block;
+namespace WPClaw\Block;
 
-use WPNativeAgent\Security\RoleGate;
+use WPClaw\Security\RoleGate;
 
 /**
  * Server renderer for the React chat block variant.
@@ -28,7 +28,7 @@ final class ReactRenderer
         }
 
         if (! $canChat) {
-            return '<div class="wpna-chat-disabled">You are not allowed to use this chat.</div>';
+            return '<div class="wpclaw-chat-disabled">You are not allowed to use this chat.</div>';
         }
 
         $placeholder = (string) ($attributes['placeholder'] ?? 'Ask something...');
@@ -66,11 +66,11 @@ final class ReactRenderer
             'accentColor' => (string) ($attributes['accentColor'] ?? '#2563eb'),
         ];
 
-        $model = (string) get_option('wp_native_agent_default_model', 'openai/gpt-4o-mini');
+        $model = (string) get_option('wpclaw_default_model', 'openai/gpt-4o-mini');
         $restNonce = wp_create_nonce('wp_rest');
 
         return sprintf(
-            '<div class="wpna-react-chat-root" data-wpna-react-chat="1" data-placeholder="%s" data-system-prompt-override="%s" data-system-prompt-mode="%s" data-max-height="%s" data-enabled-tools="%s" data-ui-config="%s" data-model="%s" data-rest-nonce="%s"></div>',
+            '<div class="wpclaw-react-chat-root" data-wpclaw-react-chat="1" data-placeholder="%s" data-system-prompt-override="%s" data-system-prompt-mode="%s" data-max-height="%s" data-enabled-tools="%s" data-ui-config="%s" data-model="%s" data-rest-nonce="%s"></div>',
             esc_attr($placeholder),
             esc_attr($systemPromptOverride),
             esc_attr($systemPromptMode),

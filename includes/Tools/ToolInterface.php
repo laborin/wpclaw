@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Tools;
+namespace WPClaw\Tools;
 
-use WPNativeAgent\Agent\Context;
+use WPClaw\Agent\Context;
 
 /**
  * Tool interface contract consumed by the server side loop.

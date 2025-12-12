@@ -382,9 +382,7 @@ function Edit( { attributes, setAttributes }: EditProps ) {
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps }>
-				<div className="wpna-chat-placeholder">
-					WP Native Agent React Chat
-				</div>
+				<div className="wpclaw-chat-placeholder">WPClaw React Chat</div>
 			</div>
 		</>
 	);

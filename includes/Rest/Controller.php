@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Rest;
+namespace WPClaw\Rest;
 
-use WPNativeAgent\Agent\Context;
-use WPNativeAgent\Agent\Loop;
-use WPNativeAgent\Provider\ProviderFactory;
-use WPNativeAgent\Security\CancelSignal;
-use WPNativeAgent\Security\InputSanitizer;
-use WPNativeAgent\Security\RateLimiter;
-use WPNativeAgent\Security\RoleGate;
-use WPNativeAgent\Settings\Options;
-use WPNativeAgent\Session\MessageRepository;
-use WPNativeAgent\Session\SessionRepository;
-use WPNativeAgent\Tools\CreateDraftPostTool;
-use WPNativeAgent\Tools\DeletePostTool;
-use WPNativeAgent\Tools\GetCurrentUserTool;
-use WPNativeAgent\Tools\GetPostTool;
-use WPNativeAgent\Tools\GetSiteStatsTool;
-use WPNativeAgent\Tools\ListRecentCommentsTool;
-use WPNativeAgent\Tools\Registry;
-use WPNativeAgent\Tools\SearchMediaTool;
-use WPNativeAgent\Tools\SearchPostsTool;
-use WPNativeAgent\Tools\UpdatePostTool;
+use WPClaw\Agent\Context;
+use WPClaw\Agent\Loop;
+use WPClaw\Provider\ProviderFactory;
+use WPClaw\Security\CancelSignal;
+use WPClaw\Security\InputSanitizer;
+use WPClaw\Security\RateLimiter;
+use WPClaw\Security\RoleGate;
+use WPClaw\Settings\Options;
+use WPClaw\Session\MessageRepository;
+use WPClaw\Session\SessionRepository;
+use WPClaw\Tools\CreateDraftPostTool;
+use WPClaw\Tools\DeletePostTool;
+use WPClaw\Tools\GetCurrentUserTool;
+use WPClaw\Tools\GetPostTool;
+use WPClaw\Tools\GetSiteStatsTool;
+use WPClaw\Tools\ListRecentCommentsTool;
+use WPClaw\Tools\Registry;
+use WPClaw\Tools\SearchMediaTool;
+use WPClaw\Tools\SearchPostsTool;
+use WPClaw\Tools\UpdatePostTool;
 
 /**
  * REST controller that wires all plugin routes.
@@ -87,7 +87,7 @@ final class Controller
 
             $provider = $providerFactory->make('openrouter', [
                 'api_key' => $apiKey,
-                'endpoint' => (string) get_option('wp_native_agent_openrouter_endpoint', 'https://openrouter.ai/api/v1/chat/completions'),
+                'endpoint' => (string) get_option('wpclaw_openrouter_endpoint', 'https://openrouter.ai/api/v1/chat/completions'),
                 'context_windows' => $options->get_context_windows(),
             ]);
 
@@ -130,7 +130,7 @@ final class Controller
     public function register_routes(): void
     {
         register_rest_route(
-            'wp-native-agent/v1',
+            'wpclaw/v1',
             '/hello',
             [
                 'methods' => 'GET',
@@ -140,7 +140,7 @@ final class Controller
         );
 
         register_rest_route(
-            'wp-native-agent/v1',
+            'wpclaw/v1',
             '/chat',
             [
                 'methods' => 'POST',
@@ -150,7 +150,7 @@ final class Controller
         );
 
         register_rest_route(
-            'wp-native-agent/v1',
+            'wpclaw/v1',
             '/history',
             [
                 [
@@ -167,7 +167,7 @@ final class Controller
         );
 
         register_rest_route(
-            'wp-native-agent/v1',
+            'wpclaw/v1',
             '/chat/cancel',
             [
                 'methods' => 'POST',
@@ -190,7 +190,7 @@ final class Controller
         return $this->respond(
             [
                 'ok' => true,
-                'message' => 'WP Native Agent bootstrap route is working.',
+                'message' => 'WPClaw bootstrap route is working.',
                 'user_id' => get_current_user_id(),
             ],
             200

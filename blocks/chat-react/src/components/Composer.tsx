@@ -40,7 +40,7 @@ function Composer( { disabled, onSubmit, placeholder }: ComposerProps ) {
 
 	return (
 		<form
-			className="wpna-composer"
+			className="wpclaw-composer"
 			onSubmit={ ( event ) => void handleSubmit( event ) }
 		>
 			<textarea

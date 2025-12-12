@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent;
+namespace WPClaw;
 
-use WPNativeAgent\Session\Schema;
+use WPClaw\Session\Schema;
 use wpdb;
 
 /**
@@ -23,10 +23,10 @@ final class Activator
         $schema = new Schema($wpdb);
         $schema->create_tables();
 
-        add_option('wp_native_agent_delete_data_on_uninstall', false);
-        add_option('wp_native_agent_allowed_chat_roles', ['administrator']);
-        add_option('wp_native_agent_allowed_tool_roles', ['administrator']);
-        add_option('wp_native_agent_system_prompt', '');
-        add_option('wp_native_agent_enabled_tools', []);
+        add_option('wpclaw_delete_data_on_uninstall', false);
+        add_option('wpclaw_allowed_chat_roles', ['administrator']);
+        add_option('wpclaw_allowed_tool_roles', ['administrator']);
+        add_option('wpclaw_system_prompt', '');
+        add_option('wpclaw_enabled_tools', []);
     }
 }

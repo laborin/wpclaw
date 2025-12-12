@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Provider;
+namespace WPClaw\Provider;
 
 /**
  * Incremental SSE parser that normalizes OpenRouter stream payloads.

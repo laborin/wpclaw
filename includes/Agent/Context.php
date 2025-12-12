@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Agent;
+namespace WPClaw\Agent;
 
 /**
  * Immutable execution context with user and session related data.

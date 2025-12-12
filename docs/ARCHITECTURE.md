@@ -4,18 +4,18 @@
 Plugin provides 2 Gutenberg chat blocks that call one shared REST backend with an agent loop, tool execution, and per-user session storage.
 
 ## Main layers
-- Bootstrap: `wp-native-agent.php`
-- Composition root: `WPNativeAgent\\Plugin`
-- Settings and admin UI: `WPNativeAgent\\Settings\\*`
-- REST endpoints: `WPNativeAgent\\Rest\\*`
-- Agent runtime: `WPNativeAgent\\Agent\\*`
-- Provider and streaming: `WPNativeAgent\\Provider\\*`
-- Tool system: `WPNativeAgent\\Tools\\*`
-- Session persistence: `WPNativeAgent\\Session\\*`
-- Security primitives: `WPNativeAgent\\Security\\*`
+- Bootstrap: `wpclaw.php`
+- Composition root: `WPClaw\\Plugin`
+- Settings and admin UI: `WPClaw\\Settings\\*`
+- REST endpoints: `WPClaw\\Rest\\*`
+- Agent runtime: `WPClaw\\Agent\\*`
+- Provider and streaming: `WPClaw\\Provider\\*`
+- Tool system: `WPClaw\\Tools\\*`
+- Session persistence: `WPClaw\\Session\\*`
+- Security primitives: `WPClaw\\Security\\*`
 
 ## Request flow
-1. Frontend block sends `POST /wp-native-agent/v1/chat`.
+1. Frontend block sends `POST /wpclaw/v1/chat`.
 2. `Guard` validates auth, nonce, and permission callback.
 3. `InputSanitizer` and `RateLimiter` validate request policy.
 4. `ChatEndpoint` loads recent conversation from repositories.
@@ -25,8 +25,8 @@ Plugin provides 2 Gutenberg chat blocks that call one shared REST backend with a
 8. Endpoint stores assistant/tool messages and returns event list.
 
 ## Persistence model
-- `wpna_sessions`: one row per user session.
-- `wpna_messages`: ordered chat history, tool metadata, timestamps.
+- `wpclaw_sessions`: one row per user session.
+- `wpclaw_messages`: ordered chat history, tool metadata, timestamps.
 
 Session and message repositories use injected `wpdb` so they stay testable and easy to replace.
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Agent;
+namespace WPClaw\Agent;
 
 /**
  * Builds the system prompt from global and block settings.

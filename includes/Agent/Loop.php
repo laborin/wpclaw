@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Agent;
+namespace WPClaw\Agent;
 
 use RuntimeException;
-use WPNativeAgent\Provider\ProviderInterface;
-use WPNativeAgent\Security\CancelSignal;
-use WPNativeAgent\Tools\ExecutionResult;
-use WPNativeAgent\Tools\Registry;
+use WPClaw\Provider\ProviderInterface;
+use WPClaw\Security\CancelSignal;
+use WPClaw\Tools\ExecutionResult;
+use WPClaw\Tools\Registry;
 
 /**
  * Server side tool-calling loop that emits normalized stream events.

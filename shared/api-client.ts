@@ -18,13 +18,13 @@ export type HistoryQuery = {
 	order?: 'asc' | 'desc';
 };
 
-export class WpNativeAgentClient {
+export class WpClawClient {
 	private readonly baseUrl: string;
 
 	private readonly nonce: string | null;
 
 	public constructor( config: ApiClientConfig = {} ) {
-		this.baseUrl = config.baseUrl ?? '/wp-json/wp-native-agent/v1';
+		this.baseUrl = config.baseUrl ?? '/wp-json/wpclaw/v1';
 		this.nonce = config.nonce ?? this.readWpNonce();
 	}
 

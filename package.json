@@ -1,7 +1,7 @@
 {
-	"name": "wp-native-agent",
+	"name": "wpclaw",
 	"version": "0.1.0",
-	"description": "WordPress plugin with native AI agent blocks and backend loop.",
+	"description": "WordPress plugin with WPClaw agent blocks and backend loop.",
 	"license": "MIT",
 	"engines": {
 		"node": ">=20"

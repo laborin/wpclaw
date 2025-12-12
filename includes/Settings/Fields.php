@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Settings;
+namespace WPClaw\Settings;
 
-use WPNativeAgent\Tools\Registry;
+use WPClaw\Tools\Registry;
 
 /**
  * Settings API registration and render callbacks for admin settings page.
@@ -28,130 +28,130 @@ final class Fields
 
     private function register_provider_fields(): void
     {
-        register_setting('wpna_provider', Options::OPTION_API_KEY, [
+        register_setting('wpclaw_provider', Options::OPTION_API_KEY, [
             'type' => 'string',
             'sanitize_callback' => [$this, 'sanitize_api_key'],
             'default' => '',
         ]);
 
-        register_setting('wpna_provider', Options::OPTION_DEFAULT_MODEL, [
+        register_setting('wpclaw_provider', Options::OPTION_DEFAULT_MODEL, [
             'type' => 'string',
             'sanitize_callback' => static fn (string $value): string => trim($value),
             'default' => 'openai/gpt-4o-mini',
         ]);
 
-        register_setting('wpna_provider', Options::OPTION_SYSTEM_PROMPT, [
+        register_setting('wpclaw_provider', Options::OPTION_SYSTEM_PROMPT, [
             'type' => 'string',
             'sanitize_callback' => [$this, 'sanitize_system_prompt'],
             'default' => '',
         ]);
 
-        register_setting('wpna_provider', Options::OPTION_CONTEXT_WINDOWS, [
+        register_setting('wpclaw_provider', Options::OPTION_CONTEXT_WINDOWS, [
             'type' => 'array',
             'sanitize_callback' => [$this, 'sanitize_context_windows'],
             'default' => [],
         ]);
 
-        add_settings_section('wpna_provider_section', 'Provider', static function (): void {
+        add_settings_section('wpclaw_provider_section', 'Provider', static function (): void {
             echo '<p>Provider connection settings.</p>';
-        }, 'wpna_provider');
+        }, 'wpclaw_provider');
 
-        add_settings_field(Options::OPTION_API_KEY, 'OpenRouter API Key', [$this, 'render_api_key_field'], 'wpna_provider', 'wpna_provider_section');
-        add_settings_field(Options::OPTION_DEFAULT_MODEL, 'Default Model', [$this, 'render_default_model_field'], 'wpna_provider', 'wpna_provider_section');
-        add_settings_field(Options::OPTION_SYSTEM_PROMPT, 'System Prompt', [$this, 'render_system_prompt_field'], 'wpna_provider', 'wpna_provider_section');
-        add_settings_field(Options::OPTION_CONTEXT_WINDOWS, 'Context Window Overrides', [$this, 'render_context_windows_field'], 'wpna_provider', 'wpna_provider_section');
+        add_settings_field(Options::OPTION_API_KEY, 'OpenRouter API Key', [$this, 'render_api_key_field'], 'wpclaw_provider', 'wpclaw_provider_section');
+        add_settings_field(Options::OPTION_DEFAULT_MODEL, 'Default Model', [$this, 'render_default_model_field'], 'wpclaw_provider', 'wpclaw_provider_section');
+        add_settings_field(Options::OPTION_SYSTEM_PROMPT, 'System Prompt', [$this, 'render_system_prompt_field'], 'wpclaw_provider', 'wpclaw_provider_section');
+        add_settings_field(Options::OPTION_CONTEXT_WINDOWS, 'Context Window Overrides', [$this, 'render_context_windows_field'], 'wpclaw_provider', 'wpclaw_provider_section');
     }
 
     private function register_access_fields(): void
     {
-        register_setting('wpna_access', Options::OPTION_ALLOWED_CHAT_ROLES, [
+        register_setting('wpclaw_access', Options::OPTION_ALLOWED_CHAT_ROLES, [
             'type' => 'array',
             'sanitize_callback' => [$this, 'sanitize_roles'],
             'default' => ['administrator'],
         ]);
 
-        register_setting('wpna_access', Options::OPTION_ALLOWED_TOOL_ROLES, [
+        register_setting('wpclaw_access', Options::OPTION_ALLOWED_TOOL_ROLES, [
             'type' => 'array',
             'sanitize_callback' => [$this, 'sanitize_roles'],
             'default' => ['administrator'],
         ]);
 
-        register_setting('wpna_access', Options::OPTION_MAX_ITERATIONS, [
+        register_setting('wpclaw_access', Options::OPTION_MAX_ITERATIONS, [
             'type' => 'integer',
             'sanitize_callback' => [$this, 'sanitize_positive_int'],
             'default' => 8,
         ]);
 
-        register_setting('wpna_access', Options::OPTION_MAX_RESPONSE_TOKENS, [
+        register_setting('wpclaw_access', Options::OPTION_MAX_RESPONSE_TOKENS, [
             'type' => 'integer',
             'sanitize_callback' => [$this, 'sanitize_positive_int'],
             'default' => 1024,
         ]);
 
-        add_settings_section('wpna_access_section', 'Access', static function (): void {
+        add_settings_section('wpclaw_access_section', 'Access', static function (): void {
             echo '<p>Role and loop limits settings.</p>';
-        }, 'wpna_access');
+        }, 'wpclaw_access');
 
-        add_settings_field(Options::OPTION_ALLOWED_CHAT_ROLES, 'Roles Allowed to Chat', [$this, 'render_chat_roles_field'], 'wpna_access', 'wpna_access_section');
-        add_settings_field(Options::OPTION_ALLOWED_TOOL_ROLES, 'Roles Allowed to Use Tools', [$this, 'render_tool_roles_field'], 'wpna_access', 'wpna_access_section');
-        add_settings_field(Options::OPTION_MAX_ITERATIONS, 'Max Iterations Per Request', [$this, 'render_max_iterations_field'], 'wpna_access', 'wpna_access_section');
-        add_settings_field(Options::OPTION_MAX_RESPONSE_TOKENS, 'Max Response Tokens', [$this, 'render_max_response_tokens_field'], 'wpna_access', 'wpna_access_section');
+        add_settings_field(Options::OPTION_ALLOWED_CHAT_ROLES, 'Roles Allowed to Chat', [$this, 'render_chat_roles_field'], 'wpclaw_access', 'wpclaw_access_section');
+        add_settings_field(Options::OPTION_ALLOWED_TOOL_ROLES, 'Roles Allowed to Use Tools', [$this, 'render_tool_roles_field'], 'wpclaw_access', 'wpclaw_access_section');
+        add_settings_field(Options::OPTION_MAX_ITERATIONS, 'Max Iterations Per Request', [$this, 'render_max_iterations_field'], 'wpclaw_access', 'wpclaw_access_section');
+        add_settings_field(Options::OPTION_MAX_RESPONSE_TOKENS, 'Max Response Tokens', [$this, 'render_max_response_tokens_field'], 'wpclaw_access', 'wpclaw_access_section');
     }
 
     private function register_tools_fields(): void
     {
-        register_setting('wpna_tools', Options::OPTION_ENABLED_TOOLS, [
+        register_setting('wpclaw_tools', Options::OPTION_ENABLED_TOOLS, [
             'type' => 'array',
             'sanitize_callback' => [$this, 'sanitize_enabled_tools'],
             'default' => [],
         ]);
 
-        add_settings_section('wpna_tools_section', 'Tools', static function (): void {
+        add_settings_section('wpclaw_tools_section', 'Tools', static function (): void {
             echo '<p>Enable or disable tools available to the agent.</p>';
-        }, 'wpna_tools');
-        add_settings_field(Options::OPTION_ENABLED_TOOLS, 'Enabled Tools', [$this, 'render_enabled_tools_field'], 'wpna_tools', 'wpna_tools_section');
+        }, 'wpclaw_tools');
+        add_settings_field(Options::OPTION_ENABLED_TOOLS, 'Enabled Tools', [$this, 'render_enabled_tools_field'], 'wpclaw_tools', 'wpclaw_tools_section');
     }
 
     private function register_rate_limit_fields(): void
     {
-        register_setting('wpna_rate_limits', Options::OPTION_RATE_USER_MINUTE, [
+        register_setting('wpclaw_rate_limits', Options::OPTION_RATE_USER_MINUTE, [
             'type' => 'integer',
             'sanitize_callback' => [$this, 'sanitize_positive_int'],
             'default' => 20,
         ]);
 
-        register_setting('wpna_rate_limits', Options::OPTION_RATE_USER_DAY, [
+        register_setting('wpclaw_rate_limits', Options::OPTION_RATE_USER_DAY, [
             'type' => 'integer',
             'sanitize_callback' => [$this, 'sanitize_positive_int'],
             'default' => 500,
         ]);
 
-        register_setting('wpna_rate_limits', Options::OPTION_RATE_IP_MINUTE, [
+        register_setting('wpclaw_rate_limits', Options::OPTION_RATE_IP_MINUTE, [
             'type' => 'integer',
             'sanitize_callback' => [$this, 'sanitize_positive_int'],
             'default' => 30,
         ]);
 
-        add_settings_section('wpna_rate_limits_section', 'Rate Limits', static function (): void {
+        add_settings_section('wpclaw_rate_limits_section', 'Rate Limits', static function (): void {
             echo '<p>Request limits for users and fallback IP.</p>';
-        }, 'wpna_rate_limits');
-        add_settings_field(Options::OPTION_RATE_USER_MINUTE, 'Requests per User per Minute', [$this, 'render_rate_user_minute_field'], 'wpna_rate_limits', 'wpna_rate_limits_section');
-        add_settings_field(Options::OPTION_RATE_USER_DAY, 'Requests per User per Day', [$this, 'render_rate_user_day_field'], 'wpna_rate_limits', 'wpna_rate_limits_section');
-        add_settings_field(Options::OPTION_RATE_IP_MINUTE, 'Requests per IP per Minute', [$this, 'render_rate_ip_minute_field'], 'wpna_rate_limits', 'wpna_rate_limits_section');
+        }, 'wpclaw_rate_limits');
+        add_settings_field(Options::OPTION_RATE_USER_MINUTE, 'Requests per User per Minute', [$this, 'render_rate_user_minute_field'], 'wpclaw_rate_limits', 'wpclaw_rate_limits_section');
+        add_settings_field(Options::OPTION_RATE_USER_DAY, 'Requests per User per Day', [$this, 'render_rate_user_day_field'], 'wpclaw_rate_limits', 'wpclaw_rate_limits_section');
+        add_settings_field(Options::OPTION_RATE_IP_MINUTE, 'Requests per IP per Minute', [$this, 'render_rate_ip_minute_field'], 'wpclaw_rate_limits', 'wpclaw_rate_limits_section');
     }
 
     private function register_data_fields(): void
     {
-        register_setting('wpna_data', Options::OPTION_DELETE_ON_UNINSTALL, [
+        register_setting('wpclaw_data', Options::OPTION_DELETE_ON_UNINSTALL, [
             'type' => 'boolean',
             'sanitize_callback' => static fn (mixed $value): bool => (bool) $value,
             'default' => false,
         ]);
 
-        add_settings_section('wpna_data_section', 'Data', static function (): void {
+        add_settings_section('wpclaw_data_section', 'Data', static function (): void {
             echo '<p>Data retention and destructive options.</p>';
-        }, 'wpna_data');
-        add_settings_field(Options::OPTION_DELETE_ON_UNINSTALL, 'Delete Data on Uninstall', [$this, 'render_delete_on_uninstall_field'], 'wpna_data', 'wpna_data_section');
+        }, 'wpclaw_data');
+        add_settings_field(Options::OPTION_DELETE_ON_UNINSTALL, 'Delete Data on Uninstall', [$this, 'render_delete_on_uninstall_field'], 'wpclaw_data', 'wpclaw_data_section');
     }
 
     public function render_api_key_field(): void

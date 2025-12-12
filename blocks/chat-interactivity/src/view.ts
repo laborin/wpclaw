@@ -1,4 +1,4 @@
-import { WpNativeAgentClient } from '../../../shared/api-client';
+import { WpClawClient } from '../../../shared/api-client';
 import {
 	presentHistory,
 	type HistoryTimelineEntry,
@@ -21,7 +21,7 @@ function escapeAttribute( value: string ): string {
 
 function createMessageNode( role: string, content: string ): HTMLDivElement {
 	const item = document.createElement( 'div' );
-	item.className = `wpna-message wpna-message-${ role } wpna-timeline-entry`;
+	item.className = `wpclaw-message wpclaw-message-${ role } wpclaw-timeline-entry`;
 
 	const header = document.createElement( 'header' );
 	header.textContent = role;
@@ -38,7 +38,7 @@ function createMessageNode( role: string, content: string ): HTMLDivElement {
 function createToolRunNode( run: ToolRun ): HTMLDetailsElement {
 	const node = document.createElement( 'details' );
 	node.className =
-		'wpna-tool-call wpna-message wpna-message-tool wpna-timeline-entry';
+		'wpclaw-tool-call wpclaw-message wpclaw-message-tool wpclaw-timeline-entry';
 
 	const summary = document.createElement( 'summary' );
 	summary.textContent = run.name;
@@ -100,12 +100,12 @@ function isNearBottom( node: HTMLElement ): boolean {
 
 function removeTimelineEntries( messagesRegion: HTMLElement ): void {
 	messagesRegion
-		.querySelectorAll( '.wpna-timeline-entry' )
+		.querySelectorAll( '.wpclaw-timeline-entry' )
 		.forEach( ( node ) => node.remove() );
 }
 
 async function mountNode( root: HTMLElement ) {
-	const client = new WpNativeAgentClient( {
+	const client = new WpClawClient( {
 		nonce: root.dataset.restNonce,
 	} );
 
@@ -115,34 +115,34 @@ async function mountNode( root: HTMLElement ) {
 	const uiConfig = parseUiConfig( root.dataset.uiConfig );
 	const uiVars = uiConfigToCssVars( uiConfig );
 
-	root.classList.add( 'wpna-chat-window' );
-	root.dataset.wpnaTheme = uiConfig.theme;
+	root.classList.add( 'wpclaw-chat-window' );
+	root.dataset.wpclawTheme = uiConfig.theme;
 	root.style.maxHeight = maxHeight;
 	Object.entries( uiVars ).forEach( ( [ key, value ] ) => {
 		root.style.setProperty( key, value );
 	} );
 
 	root.innerHTML = `
-    <header class="wpna-chat-header">
-      <strong>WP Native Agent</strong>
-      <div class="wpna-chat-actions">
+    <header class="wpclaw-chat-header">
+      <strong>WPClaw</strong>
+      <div class="wpclaw-chat-actions">
         <button type="button" data-action="clear">Clear history</button>
         <button type="button" data-action="cancel" hidden>Cancel</button>
       </div>
     </header>
-    <div class="wpna-message-list-wrap">
-      <div class="wpna-message-list" data-region="messages">
-        <button type="button" class="wpna-load-older" data-action="load-older" hidden>Load older messages</button>
+    <div class="wpclaw-message-list-wrap">
+      <div class="wpclaw-message-list" data-region="messages">
+        <button type="button" class="wpclaw-load-older" data-action="load-older" hidden>Load older messages</button>
       </div>
-      <button type="button" class="wpna-jump-latest" data-action="jump-latest" hidden>Jump to latest</button>
+      <button type="button" class="wpclaw-jump-latest" data-action="jump-latest" hidden>Jump to latest</button>
     </div>
-    <form class="wpna-composer" data-region="composer">
+    <form class="wpclaw-composer" data-region="composer">
       <textarea rows="3" placeholder="${ escapeAttribute(
 			placeholder
 		) }"></textarea>
       <button type="submit">Send</button>
     </form>
-    <p class="wpna-error" data-region="error" hidden></p>
+    <p class="wpclaw-error" data-region="error" hidden></p>
   `;
 
 	const messagesRegion = root.querySelector< HTMLElement >(
@@ -221,8 +221,8 @@ async function mountNode( root: HTMLElement ) {
 			: 'Load older messages';
 		jumpLatestButton.hidden =
 			stickToBottom ||
-			messagesRegion.querySelectorAll( '.wpna-timeline-entry' ).length ===
-				0;
+			messagesRegion.querySelectorAll( '.wpclaw-timeline-entry' )
+				.length === 0;
 	};
 
 	const scrollToBottom = () => {
@@ -412,7 +412,7 @@ async function mountNode( root: HTMLElement ) {
 
 function mount() {
 	const nodes = document.querySelectorAll< HTMLElement >(
-		'[data-wpna-interactivity-chat]'
+		'[data-wpclaw-interactivity-chat]'
 	);
 	nodes.forEach( ( node ) => {
 		void mountNode( node );

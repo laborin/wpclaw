@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Agent;
+namespace WPClaw\Agent;
 
 /**
  * Context window selector with response reservation and pair-safe truncation.

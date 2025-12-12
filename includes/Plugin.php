@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent;
+namespace WPClaw;
 
-use WPNativeAgent\Block\InteractivityRenderer;
-use WPNativeAgent\Block\ReactRenderer;
-use WPNativeAgent\Block\Registration as BlockRegistration;
-use WPNativeAgent\Rest\Controller;
-use WPNativeAgent\Security\RoleGate;
-use WPNativeAgent\Settings\Fields;
-use WPNativeAgent\Settings\Options;
-use WPNativeAgent\Settings\Page;
-use WPNativeAgent\Tools\CreateDraftPostTool;
-use WPNativeAgent\Tools\DeletePostTool;
-use WPNativeAgent\Tools\GetCurrentUserTool;
-use WPNativeAgent\Tools\GetPostTool;
-use WPNativeAgent\Tools\GetSiteStatsTool;
-use WPNativeAgent\Tools\ListRecentCommentsTool;
-use WPNativeAgent\Tools\Registry;
-use WPNativeAgent\Tools\SearchMediaTool;
-use WPNativeAgent\Tools\SearchPostsTool;
-use WPNativeAgent\Tools\UpdatePostTool;
+use WPClaw\Block\InteractivityRenderer;
+use WPClaw\Block\ReactRenderer;
+use WPClaw\Block\Registration as BlockRegistration;
+use WPClaw\Rest\Controller;
+use WPClaw\Security\RoleGate;
+use WPClaw\Settings\Fields;
+use WPClaw\Settings\Options;
+use WPClaw\Settings\Page;
+use WPClaw\Tools\CreateDraftPostTool;
+use WPClaw\Tools\DeletePostTool;
+use WPClaw\Tools\GetCurrentUserTool;
+use WPClaw\Tools\GetPostTool;
+use WPClaw\Tools\GetSiteStatsTool;
+use WPClaw\Tools\ListRecentCommentsTool;
+use WPClaw\Tools\Registry;
+use WPClaw\Tools\SearchMediaTool;
+use WPClaw\Tools\SearchPostsTool;
+use WPClaw\Tools\UpdatePostTool;
 
 /**
  * Main plugin composition root that wires services and register hooks.

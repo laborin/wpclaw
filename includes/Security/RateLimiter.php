@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Security;
+namespace WPClaw\Security;
 
 /**
  * Rate limiter for per-user and per-ip request limits.
@@ -79,8 +79,8 @@ final class RateLimiter
      */
     public function check_user_limits(int $userId, int $perMinute, int $perDay): array
     {
-        $minute = $this->hit('wpna_rate_user_minute_' . $userId, $perMinute, 60);
-        $day = $this->hit('wpna_rate_user_day_' . $userId, $perDay, 86400);
+        $minute = $this->hit('wpclaw_rate_user_minute_' . $userId, $perMinute, 60);
+        $day = $this->hit('wpclaw_rate_user_day_' . $userId, $perDay, 86400);
 
         return [
             'allowed' => $minute['allowed'] && $day['allowed'],
@@ -94,7 +94,7 @@ final class RateLimiter
      */
     public function check_ip_limit(string $ip, int $perMinute): array
     {
-        return $this->hit('wpna_rate_ip_minute_' . $ip, $perMinute, 60);
+        return $this->hit('wpclaw_rate_ip_minute_' . $ip, $perMinute, 60);
     }
 
     private static function default_get(string $key): mixed

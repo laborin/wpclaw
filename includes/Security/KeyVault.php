@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Security;
+namespace WPClaw\Security;
 
 /**
  * Symmetric key helper for encrypting and decrypting provider secrets.
@@ -69,7 +69,7 @@ final class KeyVault
 
     private function key_material(): string
     {
-        $base = defined('AUTH_KEY') ? (string) AUTH_KEY : 'wp-native-agent-default-key';
+        $base = defined('AUTH_KEY') ? (string) AUTH_KEY : 'wpclaw-default-key';
 
         return hash('sha256', $base, true);
     }

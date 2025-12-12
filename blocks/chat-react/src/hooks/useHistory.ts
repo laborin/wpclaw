@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from '@wordpress/element';
-import { WpNativeAgentClient } from '../../../../shared/api-client';
+import { WpClawClient } from '../../../../shared/api-client';
 import {
 	presentHistory,
 	type HistoryTimelineEntry,
@@ -19,7 +19,7 @@ type UseHistoryResult = {
 	setError: ( value: string | null ) => void;
 };
 
-export function useHistory( client: WpNativeAgentClient ): UseHistoryResult {
+export function useHistory( client: WpClawClient ): UseHistoryResult {
 	const [ timeline, setTimelineState ] = useState< HistoryTimelineEntry[] >(
 		[]
 	);

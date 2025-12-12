@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Security;
+namespace WPClaw\Security;
 
 /**
  * Role based access gate for chat access and tool access.
@@ -82,7 +82,7 @@ final class RoleGate
      */
     public function allowed_chat_roles(): array
     {
-        return $this->normalize_roles((call_user_func($this->optionGetter, 'wp_native_agent_allowed_chat_roles', ['administrator'])));
+        return $this->normalize_roles((call_user_func($this->optionGetter, 'wpclaw_allowed_chat_roles', ['administrator'])));
     }
 
     /**
@@ -90,7 +90,7 @@ final class RoleGate
      */
     public function allowed_tool_roles(): array
     {
-        return $this->normalize_roles((call_user_func($this->optionGetter, 'wp_native_agent_allowed_tool_roles', ['administrator'])));
+        return $this->normalize_roles((call_user_func($this->optionGetter, 'wpclaw_allowed_tool_roles', ['administrator'])));
     }
 
     /**

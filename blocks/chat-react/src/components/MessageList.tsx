@@ -21,14 +21,14 @@ function MessageList( {
 }: MessageListProps ) {
 	return (
 		<div
-			className="wpna-message-list"
+			className="wpclaw-message-list"
 			ref={ listRef }
 			onScroll={ onScroll }
 		>
 			{ hasMore ? (
 				<button
 					type="button"
-					className="wpna-load-older"
+					className="wpclaw-load-older"
 					onClick={ onLoadOlder }
 					disabled={ loadingOlder }
 				>
@@ -52,7 +52,7 @@ function MessageList( {
 				return (
 					<details
 						key={ `${ call.id }-${ index }` }
-						className="wpna-tool-call wpna-message wpna-message-tool wpna-timeline-entry"
+						className="wpclaw-tool-call wpclaw-message wpclaw-message-tool wpclaw-timeline-entry"
 					>
 						<summary>{ call.name }</summary>
 						<pre>{ JSON.stringify( call.args, null, 2 ) }</pre>

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Rest;
+namespace WPClaw\Rest;
 
-use WPNativeAgent\Agent\Context;
-use WPNativeAgent\Agent\SystemPromptBuilder;
-use WPNativeAgent\Security\CancelSignal;
-use WPNativeAgent\Security\InputSanitizer;
-use WPNativeAgent\Security\RateLimiter;
+use WPClaw\Agent\Context;
+use WPClaw\Agent\SystemPromptBuilder;
+use WPClaw\Security\CancelSignal;
+use WPClaw\Security\InputSanitizer;
+use WPClaw\Security\RateLimiter;
 
 /**
  * Chat endpoint handler that runs one agent loop turn.

@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "wp-native-agent/chat-react",
+	"name": "wpclaw/chat-react",
 	"version": "0.1.0",
-	"title": "WP Native Agent Chat (React)",
+	"title": "WPClaw Chat (React)",
 	"category": "widgets",
 	"icon": "format-chat",
-	"description": "React frontend variant for WP Native Agent chat.",
-	"textdomain": "wp-native-agent",
+	"description": "React frontend variant for WPClaw chat.",
+	"textdomain": "wpclaw",
 	"supports": {
 		"html": false
 	},

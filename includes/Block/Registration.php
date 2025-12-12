@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace WPNativeAgent\Block;
+namespace WPClaw\Block;
 
 /**
  * Registers both block variants and bind render callbacks.
