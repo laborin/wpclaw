@@ -32,12 +32,7 @@ final class InteractivityRenderer
         }
 
         $placeholder = (string) ($attributes['placeholder'] ?? 'Ask something...');
-        $systemPromptOverride = (string) ($attributes['systemPromptOverride'] ?? '');
-        $systemPromptMode = (bool) ($attributes['systemPromptOverridesGlobal'] ?? true) ? 'override' : 'append';
         $maxHeight = (string) ($attributes['maxHeight'] ?? '600px');
-        $enabledTools = isset($attributes['enabledTools']) && is_array($attributes['enabledTools'])
-            ? $attributes['enabledTools']
-            : [];
         $uiConfig = [
             'theme' => (string) ($attributes['theme'] ?? 'auto'),
             'fontFamily' => (string) ($attributes['fontFamily'] ?? '"Manrope", "Avenir Next", "Segoe UI", sans-serif'),
@@ -70,12 +65,9 @@ final class InteractivityRenderer
         $restNonce = wp_create_nonce('wp_rest');
 
         return sprintf(
-            '<div class="wpclaw-interactivity-chat" data-wpclaw-interactivity-chat="1" data-placeholder="%s" data-system-prompt-override="%s" data-system-prompt-mode="%s" data-max-height="%s" data-enabled-tools="%s" data-ui-config="%s" data-model="%s" data-rest-nonce="%s" data-wp-interactive="wpclaw/chat"></div>',
+            '<div class="wpclaw-interactivity-chat" data-wpclaw-interactivity-chat="1" data-placeholder="%s" data-max-height="%s" data-ui-config="%s" data-model="%s" data-rest-nonce="%s" data-wp-interactive="wpclaw/chat"></div>',
             esc_attr($placeholder),
-            esc_attr($systemPromptOverride),
-            esc_attr($systemPromptMode),
             esc_attr($maxHeight),
-            esc_attr((string) wp_json_encode($enabledTools)),
             esc_attr((string) wp_json_encode($uiConfig)),
             esc_attr($model),
             esc_attr($restNonce)

@@ -5,7 +5,6 @@ import {
 	type ChatUiConfig,
 	uiConfigToCssVars,
 } from '../../../../shared/ui-config';
-import type { SystemPromptMode } from '../../../../shared/types';
 import CancelButton from './CancelButton';
 import Composer from './Composer';
 import MessageList from './MessageList';
@@ -16,9 +15,6 @@ type ChatWindowProps = {
 	placeholder: string;
 	model: string;
 	maxHeight: string;
-	enabledTools: string[];
-	systemPromptOverride: string;
-	systemPromptMode: SystemPromptMode;
 	nonce?: string;
 	uiConfig: ChatUiConfig;
 };
@@ -36,9 +32,6 @@ function ChatWindow( {
 	placeholder,
 	model,
 	maxHeight,
-	enabledTools,
-	systemPromptOverride,
-	systemPromptMode,
 	nonce,
 	uiConfig,
 }: ChatWindowProps ) {
@@ -69,9 +62,6 @@ function ChatWindow( {
 		const ok = await stream.send( {
 			message: content,
 			model,
-			enabledTools,
-			systemPromptOverride,
-			systemPromptMode,
 		} );
 
 		if ( ! ok ) {

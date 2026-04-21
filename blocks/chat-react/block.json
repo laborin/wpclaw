@@ -16,18 +16,6 @@
 			"type": "string",
 			"default": "Ask something..."
 		},
-		"systemPromptOverride": {
-			"type": "string",
-			"default": ""
-		},
-		"systemPromptOverridesGlobal": {
-			"type": "boolean",
-			"default": true
-		},
-		"enabledTools": {
-			"type": "array",
-			"default": []
-		},
 		"hideIfDisallowed": {
 			"type": "boolean",
 			"default": false

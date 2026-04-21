@@ -114,20 +114,9 @@ final class ChatEndpoint
             ];
         }
 
-        $requestedTools = $this->inputSanitizer->sanitize_enabled_tools($this->request_param($request, 'enabled_tools', []));
-        $enabledTools = $this->resolve_enabled_tools($requestedTools);
+        $enabledTools = $this->resolve_enabled_tools();
         $globalSystemPrompt = $this->read_string_option('get_system_prompt', '');
-        $systemPromptOverride = $this->inputSanitizer->sanitize_system_prompt(
-            $this->request_param($request, 'system_prompt_override', '')
-        );
-        $systemPromptMode = $this->sanitize_system_prompt_mode(
-            $this->request_param($request, 'system_prompt_mode', 'override')
-        );
-        $systemPrompt = $this->systemPromptBuilder->build(
-            $globalSystemPrompt,
-            $systemPromptOverride,
-            $systemPromptMode
-        );
+        $systemPrompt = $this->systemPromptBuilder->build($globalSystemPrompt);
         $session = $this->sessionRepository->get_or_create_by_user_id($userId);
         $sessionId = (int) ($session['id'] ?? 0);
 
@@ -244,30 +233,16 @@ final class ChatEndpoint
     }
 
     /**
-     * @param array<int, string> $requestedTools
      * @return array<int, string>
      */
-    private function resolve_enabled_tools(array $requestedTools): array
+    private function resolve_enabled_tools(): array
     {
         $globalTools = $this->read_enabled_tools_option();
         if ($globalTools === null) {
-            return $requestedTools;
-        }
-
-        if ($globalTools === []) {
             return [];
         }
 
-        if ($requestedTools === []) {
-            return $globalTools;
-        }
-
-        $globalIndex = array_fill_keys($globalTools, true);
-
-        return array_values(array_filter(
-            $requestedTools,
-            static fn (string $toolName): bool => isset($globalIndex[$toolName])
-        ));
+        return $globalTools;
     }
 
     /**
@@ -298,8 +273,4 @@ final class ChatEndpoint
         return is_string($value) ? $value : $default;
     }
 
-    private function sanitize_system_prompt_mode(mixed $value): string
-    {
-        return $value === 'append' ? 'append' : 'override';
-    }
 }

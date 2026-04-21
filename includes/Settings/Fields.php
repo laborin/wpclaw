@@ -58,7 +58,7 @@ final class Fields
 
         add_settings_field(Options::OPTION_API_KEY, 'OpenRouter API Key', [$this, 'render_api_key_field'], 'wpclaw_provider', 'wpclaw_provider_section');
         add_settings_field(Options::OPTION_DEFAULT_MODEL, 'Default Model', [$this, 'render_default_model_field'], 'wpclaw_provider', 'wpclaw_provider_section');
-        add_settings_field(Options::OPTION_SYSTEM_PROMPT, 'System Prompt', [$this, 'render_system_prompt_field'], 'wpclaw_provider', 'wpclaw_provider_section');
+        add_settings_field(Options::OPTION_SYSTEM_PROMPT, 'Additional System Prompt', [$this, 'render_system_prompt_field'], 'wpclaw_provider', 'wpclaw_provider_section');
         add_settings_field(Options::OPTION_CONTEXT_WINDOWS, 'Context Window Overrides', [$this, 'render_context_windows_field'], 'wpclaw_provider', 'wpclaw_provider_section');
     }
 
@@ -197,7 +197,7 @@ final class Fields
     public function render_system_prompt_field(): void
     {
         printf(
-            '<textarea name="%1$s" rows="6" cols="70" class="large-text code" placeholder="You are a helpful WordPress assistant.">%2$s</textarea>',
+            '<textarea name="%1$s" rows="6" cols="70" class="large-text code" placeholder="Leave empty to use the default WPClaw agent prompt.">%2$s</textarea>',
             esc_attr(Options::OPTION_SYSTEM_PROMPT),
             esc_textarea($this->options->get_system_prompt())
         );

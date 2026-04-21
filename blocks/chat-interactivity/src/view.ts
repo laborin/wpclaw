@@ -4,7 +4,7 @@ import {
 	type HistoryTimelineEntry,
 } from '../../../shared/history-presenter';
 import { parseUiConfig, uiConfigToCssVars } from '../../../shared/ui-config';
-import type { SystemPromptMode, ToolRun } from '../../../shared/types';
+import type { ToolRun } from '../../../shared/types';
 import './style.scss';
 import '../view.scss';
 
@@ -66,29 +66,6 @@ function createTimelineNode( entry: HistoryTimelineEntry ): HTMLElement {
 	}
 
 	return createToolRunNode( entry.run );
-}
-
-function parseEnabledTools( raw: string | undefined ): string[] {
-	if ( ! raw ) {
-		return [];
-	}
-
-	try {
-		const parsed = JSON.parse( raw );
-		if ( Array.isArray( parsed ) ) {
-			return parsed.filter(
-				( entry ): entry is string => typeof entry === 'string'
-			);
-		}
-	} catch {
-		return [];
-	}
-
-	return [];
-}
-
-function readSystemPromptMode( raw: string | undefined ): SystemPromptMode {
-	return raw === 'append' ? 'append' : 'override';
 }
 
 function isNearBottom( node: HTMLElement ): boolean {
@@ -186,11 +163,6 @@ async function mountNode( root: HTMLElement ) {
 		return;
 	}
 
-	const enabledTools = parseEnabledTools( root.dataset.enabledTools );
-	const systemPromptOverride = root.dataset.systemPromptOverride ?? '';
-	const systemPromptMode = readSystemPromptMode(
-		root.dataset.systemPromptMode
-	);
 	let sending = false;
 	let loadingOlder = false;
 	let hasMore = false;
@@ -389,9 +361,6 @@ async function mountNode( root: HTMLElement ) {
 		const response = await client.sendChat( {
 			message: content,
 			model,
-			enabled_tools: enabledTools,
-			system_prompt_override: systemPromptOverride,
-			system_prompt_mode: systemPromptMode,
 		} );
 
 		sending = false;

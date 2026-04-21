@@ -1,8 +1,8 @@
 # WPClaw
 
-Experimental WordPress plugin with two native chat blocks (React and Interactivity) that share one backend agent loop and tool system.
+WPClaw is an experimental WordPress-native AI agent. It runs inside WordPress, uses the site as context, and can interact with approved tools through the same permission model that already protects the admin.
 
-This project is an early prototype. The core runtime, settings page, and block UI are available, but the public API and internal architecture may still change.
+This prototype is evolving from a simple chat experiment into an OpenClaw-style agent runtime for WordPress. The current build includes chat blocks, a backend agent loop, tool execution, session history, and provider settings.
 
 ## What is implemented
 - session and message persistence (`wpclaw_sessions`, `wpclaw_messages`)
@@ -18,8 +18,6 @@ This project is an early prototype. The core runtime, settings page, and block U
 1. Download the ZIP from a tagged release.
 2. Upload it in WordPress under Plugins > Add New > Upload Plugin.
 3. Activate WPClaw.
-
-Release ZIPs include the compiled block assets in `blocks/*/build`, so users do not need Node.js.
 
 ## Local development
 1. `npm install`

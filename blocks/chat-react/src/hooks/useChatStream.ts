@@ -1,13 +1,9 @@
 import { useCallback, useState } from '@wordpress/element';
 import { WpClawClient } from '../../../../shared/api-client';
-import type { SystemPromptMode } from '../../../../shared/types';
 
 type SendPayload = {
 	message: string;
 	model: string;
-	enabledTools: string[];
-	systemPromptOverride: string;
-	systemPromptMode: SystemPromptMode;
 };
 
 type UseChatStreamResult = {
@@ -39,9 +35,6 @@ export function useChatStream( client: WpClawClient ): UseChatStreamResult {
 			const response = await client.sendChat( {
 				message: payload.message,
 				model: payload.model,
-				enabled_tools: payload.enabledTools,
-				system_prompt_override: payload.systemPromptOverride,
-				system_prompt_mode: payload.systemPromptMode,
 			} );
 
 			setIsSending( false );

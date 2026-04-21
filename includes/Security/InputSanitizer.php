@@ -60,19 +60,4 @@ final class InputSanitizer
         return trim(preg_replace('/[^a-zA-Z0-9_\/.\-:]/', '', $model) ?? '');
     }
 
-    public function sanitize_system_prompt(mixed $prompt, int $maxLength = 8000): string
-    {
-        if (! is_string($prompt)) {
-            return '';
-        }
-
-        $prompt = trim($prompt);
-        $prompt = function_exists('wp_strip_all_tags') ? wp_strip_all_tags($prompt, true) : strip_tags($prompt);
-
-        if (mb_strlen($prompt) > $maxLength) {
-            $prompt = mb_substr($prompt, 0, $maxLength);
-        }
-
-        return $prompt;
-    }
 }

@@ -4,7 +4,6 @@ import {
 	PanelBody,
 	SelectControl,
 	TextControl,
-	TextareaControl,
 	ToggleControl,
 } from '@wordpress/components';
 import { DEFAULT_CHAT_UI_CONFIG } from '../../../shared/ui-config';
@@ -14,9 +13,6 @@ type ChatReactAttributes = {
 	maxHeight: string;
 	hideIfDisallowed: boolean;
 	theme: 'auto' | 'light' | 'dark';
-	enabledTools: string[];
-	systemPromptOverride: string;
-	systemPromptOverridesGlobal: boolean;
 	fontFamily: string;
 	fontSize: string;
 	lineHeight: string;
@@ -73,30 +69,6 @@ type EditProps = {
 	attributes: ChatReactAttributes;
 	setAttributes: ( next: Partial< ChatReactAttributes > ) => void;
 };
-
-const TOOL_OPTIONS: Array< { label: string; value: string } > = [
-	{ label: 'search_posts', value: 'search_posts' },
-	{ label: 'get_post', value: 'get_post' },
-	{ label: 'list_recent_comments', value: 'list_recent_comments' },
-	{ label: 'get_site_stats', value: 'get_site_stats' },
-	{ label: 'search_media', value: 'search_media' },
-	{ label: 'get_current_user', value: 'get_current_user' },
-	{ label: 'create_draft_post', value: 'create_draft_post' },
-	{ label: 'update_post', value: 'update_post' },
-	{ label: 'delete_post', value: 'delete_post' },
-];
-
-function normalizeEnabledToolsValue( value: string | string[] ): string[] {
-	if ( Array.isArray( value ) ) {
-		return value;
-	}
-
-	if ( typeof value === 'string' && value.length > 0 ) {
-		return [ value ];
-	}
-
-	return [];
-}
 
 function Edit( { attributes, setAttributes }: EditProps ) {
 	const blockProps = useBlockProps();
@@ -349,36 +321,6 @@ function Edit( { attributes, setAttributes }: EditProps ) {
 					<Button variant="secondary" onClick={ resetStyleDefaults }>
 						Reset style defaults
 					</Button>
-				</PanelBody>
-				<PanelBody title="Agent" initialOpen={ false }>
-					<TextareaControl
-						label="Block system prompt"
-						rows={ 8 }
-						value={ attributes.systemPromptOverride }
-						onChange={ ( value ) =>
-							setAttributes( { systemPromptOverride: value } )
-						}
-					/>
-					<ToggleControl
-						label="Override global system prompt"
-						checked={ attributes.systemPromptOverridesGlobal }
-						onChange={ ( value ) =>
-							setAttributes( {
-								systemPromptOverridesGlobal: value,
-							} )
-						}
-					/>
-					<SelectControl
-						multiple
-						label="Enabled tools"
-						value={ attributes.enabledTools }
-						options={ TOOL_OPTIONS }
-						onChange={ ( value ) => {
-							const next = normalizeEnabledToolsValue( value );
-
-							setAttributes( { enabledTools: next } );
-						} }
-					/>
 				</PanelBody>
 			</InspectorControls>
 			<div { ...blockProps }>

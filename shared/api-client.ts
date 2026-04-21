@@ -4,7 +4,6 @@ import type {
 	ChatResponse,
 	ClearHistoryResponse,
 	HistoryResponse,
-	SystemPromptMode,
 } from './types';
 
 export type ApiClientConfig = {
@@ -71,9 +70,6 @@ export class WpClawClient {
 	public async sendChat( payload: {
 		message: string;
 		model?: string;
-		enabled_tools?: string[];
-		system_prompt_override?: string;
-		system_prompt_mode?: SystemPromptMode;
 	} ): Promise< ChatResponse > {
 		return this.request< ChatResponse >( `/chat`, {
 			method: 'POST',

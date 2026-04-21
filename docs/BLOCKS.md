@@ -8,8 +8,6 @@ Both blocks are dynamic. Server renderers enforce role checks and output data at
 
 ## Shared block attributes
 - `placeholder`
-- `systemPromptOverride`
-- `enabledTools`
 - `hideIfDisallowed`
 - `theme`
 - `maxHeight`
@@ -17,13 +15,11 @@ Both blocks are dynamic. Server renderers enforce role checks and output data at
 ## Runtime behavior
 - Loads history using `GET /history`.
 - Sends user message using `POST /chat`.
-- Sends block system prompt override when configured.
-- Block system prompt can replace the global prompt or append to it.
 - Shows tool calls/results emitted by loop events.
 - Supports cancel run (`POST /chat/cancel`) and clear history (`DELETE /history`).
 
-## Tool selection
-Global settings define the maximum tools available to the agent. Block `enabledTools` can reduce that list for one block, but it can not enable a tool disabled in settings. Empty block selection means use all globally enabled tools.
+## Agent settings
+System prompt additions and enabled tools are configured globally in plugin settings. Blocks only control presentation and access display behavior.
 
 ## Build commands
 - `npm run build` builds both block variants.

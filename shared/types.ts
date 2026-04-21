@@ -6,8 +6,6 @@ export type ApiError = {
 	status: number;
 };
 
-export type SystemPromptMode = 'override' | 'append';
-
 export type ToolCall = {
 	id: string;
 	name: string;

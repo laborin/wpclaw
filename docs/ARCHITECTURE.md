@@ -19,7 +19,7 @@ Plugin provides 2 Gutenberg chat blocks that call one shared REST backend with a
 2. `Guard` validates auth, nonce, and permission callback.
 3. `InputSanitizer` and `RateLimiter` validate request policy.
 4. `ChatEndpoint` loads recent conversation from repositories.
-5. `ChatEndpoint` resolves global tool settings, block tool subset, and system prompt.
+5. `ChatEndpoint` resolves global tool settings and the composed system prompt.
 6. `Loop` calls provider and executes tools through `Registry`.
 7. Loop emits normalized events (`assistant_delta`, `tool_call_start`, `tool_call_result`, `done`).
 8. Endpoint stores assistant/tool messages and returns event list.
