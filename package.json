@@ -7,18 +7,27 @@
 		"node": ">=20"
 	},
 	"scripts": {
-		"build": "npm run build:chat-react && npm run build:chat-interactivity",
-		"build:chat-react": "cd blocks/chat-react && wp-scripts build --webpack-copy-php --output-path=build index=./src/index.ts view=./src/view.tsx",
-		"build:chat-interactivity": "cd blocks/chat-interactivity && wp-scripts build --webpack-copy-php --output-path=build index=./src/index.ts view=./src/view.ts",
+		"build": "npm run build:chat-react",
+		"build:chat-react": "wp-scripts build --webpack-copy-php --output-path=blocks/chat-react/build index=blocks/chat-react/src/index.ts view=blocks/chat-react/src/view.tsx",
+		"build:chat-interactivity": "wp-scripts build --webpack-copy-php --output-path=blocks/chat-interactivity/build index=blocks/chat-interactivity/src/index.ts view=blocks/chat-interactivity/src/view.ts",
 		"start": "npm run start:chat-react",
-		"start:chat-react": "cd blocks/chat-react && wp-scripts start --webpack-copy-php --output-path=build index=./src/index.ts view=./src/view.tsx",
-		"start:chat-interactivity": "cd blocks/chat-interactivity && wp-scripts start --webpack-copy-php --output-path=build index=./src/index.ts view=./src/view.ts",
+		"start:chat-react": "wp-scripts start --webpack-copy-php --output-path=blocks/chat-react/build index=blocks/chat-react/src/index.ts view=blocks/chat-react/src/view.tsx",
+		"start:chat-interactivity": "wp-scripts start --webpack-copy-php --output-path=blocks/chat-interactivity/build index=blocks/chat-interactivity/src/index.ts view=blocks/chat-interactivity/src/view.ts",
 		"lint:js": "wp-scripts lint-js blocks/chat-react/src blocks/chat-interactivity/src shared --ext js,jsx,ts,tsx",
 		"format": "wp-scripts format",
 		"version:bump": "node scripts/bump-version.mjs"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^27.9.0",
+		"@wordpress/element": "^6.44.0",
+		"@wordpress/scripts": "^32.0.0",
 		"typescript": "^5.6.3"
+	},
+	"overrides": {
+		"copy-webpack-plugin": {
+			"serialize-javascript": "7.0.5"
+		},
+		"markdownlint-cli": {
+			"minimatch": "3.1.5"
+		}
 	}
 }

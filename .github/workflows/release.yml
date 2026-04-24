@@ -4,6 +4,12 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to package, for example v0.1.0'
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -15,11 +21,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
@@ -32,11 +40,13 @@ jobs:
         run: npm run build
 
       - name: Package plugin
+        env:
+          TAG_NAME: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
         run: |
           set -euo pipefail
 
           plugin_slug="wpclaw"
-          tag_name="${GITHUB_REF_NAME}"
+          tag_name="${TAG_NAME}"
           zip_name="${plugin_slug}-${tag_name}.zip"
 
           rm -rf dist
@@ -49,13 +59,13 @@ jobs:
             LICENSE \
             includes \
             languages \
-            blocks \
             "dist/${plugin_slug}/"
 
+          mkdir -p "dist/${plugin_slug}/blocks"
+          rsync -a blocks/chat-react "dist/${plugin_slug}/blocks/"
+
           rm -rf "dist/${plugin_slug}/blocks/chat-react/src"
-          rm -rf "dist/${plugin_slug}/blocks/chat-interactivity/src"
           rm -f "dist/${plugin_slug}/blocks/chat-react/view.scss"
-          rm -f "dist/${plugin_slug}/blocks/chat-interactivity/view.scss"
           find "dist/${plugin_slug}" -name "*.map" -delete
           find "dist/${plugin_slug}" -type d -empty -delete
 
@@ -64,9 +74,10 @@ jobs:
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
         run: |
-          gh release create "${GITHUB_REF_NAME}" \
-            "dist/wpclaw-${GITHUB_REF_NAME}.zip" \
-            --title "WPClaw ${GITHUB_REF_NAME}" \
+          gh release create "${TAG_NAME}" \
+            "dist/wpclaw-${TAG_NAME}.zip" \
+            --title "WPClaw ${TAG_NAME}" \
             --generate-notes \
             --verify-tag

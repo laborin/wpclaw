@@ -27,12 +27,13 @@ There are two Gutenberg blocks in the source but only the React one is maintaine
 3. Activate WPClaw.
 
 ## Local development
-1. `npm install`
+1. `npm ci`
 2. Build block assets: `npm run build`
 3. Activate the plugin in WordPress.
 
 ## Development commands
-- Build all blocks: `npm run build`
+- Build supported React block: `npm run build`
+- Build deprecated Interactivity block: `npm run build:chat-interactivity`
 - Watch React block: `npm run start:chat-react`
 - Watch deprecated Interactivity block: `npm run start:chat-interactivity`
 - JS lint: `npm run lint:js`
