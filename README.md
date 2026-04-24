@@ -15,7 +15,7 @@ This prototype is evolving from a simple chat experiment into an OpenClaw-style 
   - `wpclaw/chat-interactivity`
 
 ## Install from a release ZIP
-1. Download the ZIP from a tagged release.
+1. Download the `wpclaw-<tag>.zip` asset from a GitHub release.
 2. Upload it in WordPress under Plugins > Add New > Upload Plugin.
 3. Activate WPClaw.
 
@@ -29,3 +29,9 @@ This prototype is evolving from a simple chat experiment into an OpenClaw-style 
 - Watch React block: `npm run start:chat-react`
 - Watch Interactivity block: `npm run start:chat-interactivity`
 - JS lint: `npm run lint:js`
+- Bump version: `npm run version:bump -- 0.2.0`
+
+## Releases
+Version tags (`v*`) create GitHub releases automatically. The release workflow installs dependencies, builds the block assets, packages the plugin as `wpclaw-<tag>.zip`, and uploads that ZIP as the release asset.
+
+Before creating a tag, run `npm run version:bump -- <version>`, commit the version change, then tag that commit as `v<version>`.

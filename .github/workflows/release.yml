@@ -1,0 +1,72 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint JavaScript
+        run: npm run lint:js
+
+      - name: Build block assets
+        run: npm run build
+
+      - name: Package plugin
+        run: |
+          set -euo pipefail
+
+          plugin_slug="wpclaw"
+          tag_name="${GITHUB_REF_NAME}"
+          zip_name="${plugin_slug}-${tag_name}.zip"
+
+          rm -rf dist
+          mkdir -p "dist/${plugin_slug}"
+
+          rsync -a \
+            wpclaw.php \
+            uninstall.php \
+            README.md \
+            LICENSE \
+            includes \
+            languages \
+            blocks \
+            "dist/${plugin_slug}/"
+
+          rm -rf "dist/${plugin_slug}/blocks/chat-react/src"
+          rm -rf "dist/${plugin_slug}/blocks/chat-interactivity/src"
+          rm -f "dist/${plugin_slug}/blocks/chat-react/view.scss"
+          rm -f "dist/${plugin_slug}/blocks/chat-interactivity/view.scss"
+          find "dist/${plugin_slug}" -name "*.map" -delete
+          find "dist/${plugin_slug}" -type d -empty -delete
+
+          ( cd dist && zip -r "${zip_name}" "${plugin_slug}" )
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            "dist/wpclaw-${GITHUB_REF_NAME}.zip" \
+            --title "WPClaw ${GITHUB_REF_NAME}" \
+            --generate-notes \
+            --verify-tag

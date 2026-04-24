@@ -2,6 +2,7 @@
 /node_modules/
 /dist/
 /build/
+/blocks/*/build/
 /.wp-env/
 /.idea/
 .vscode/
@@ -11,4 +12,3 @@
 *.log
 .DS_Store
 composer.lock
-package-lock.json

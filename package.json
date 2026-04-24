@@ -14,7 +14,8 @@
 		"start:chat-react": "cd blocks/chat-react && wp-scripts start --webpack-copy-php --output-path=build index=./src/index.ts view=./src/view.tsx",
 		"start:chat-interactivity": "cd blocks/chat-interactivity && wp-scripts start --webpack-copy-php --output-path=build index=./src/index.ts view=./src/view.ts",
 		"lint:js": "wp-scripts lint-js blocks/chat-react/src blocks/chat-interactivity/src shared --ext js,jsx,ts,tsx",
-		"format": "wp-scripts format"
+		"format": "wp-scripts format",
+		"version:bump": "node scripts/bump-version.mjs"
 	},
 	"devDependencies": {
 		"@wordpress/scripts": "^27.9.0",
