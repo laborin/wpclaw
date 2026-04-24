@@ -28,6 +28,9 @@ export type ChatUiConfig = {
 	accentColor: string;
 };
 
+/**
+ * Default visual contract used by editor controls and frontend renderers.
+ */
 export const DEFAULT_CHAT_UI_CONFIG: ChatUiConfig = {
 	theme: 'auto',
 	fontFamily: '"Manrope", "Avenir Next", "Segoe UI", sans-serif',
@@ -74,6 +77,14 @@ function readString( value: unknown, fallback: string ): string {
 		: fallback;
 }
 
+/**
+ * Completes partial UI settings with safe defaults.
+ *
+ * This keeps saved block attributes and server printed JSON tolerant to missing
+ * keys while keeping a stable CSS variable surface.
+ *
+ * @param value Partial config loaded from attributes or data attributes.
+ */
 export function normalizeUiConfig(
 	value: Partial< ChatUiConfig > | null | undefined
 ): ChatUiConfig {
@@ -177,6 +188,13 @@ export function normalizeUiConfig(
 	};
 }
 
+/**
+ * Parses UI config from a `data-ui-config` attribute.
+ *
+ * Bad JSON falls back to defaults instead of breaking chat mount.
+ *
+ * @param raw JSON string from the DOM.
+ */
 export function parseUiConfig( raw: string | null | undefined ): ChatUiConfig {
 	if ( typeof raw !== 'string' || raw.trim() === '' ) {
 		return DEFAULT_CHAT_UI_CONFIG;
@@ -194,6 +212,11 @@ export function parseUiConfig( raw: string | null | undefined ): ChatUiConfig {
 	}
 }
 
+/**
+ * Maps UI config to CSS custom properties consumed by block styles.
+ *
+ * @param config Full UI config.
+ */
 export function uiConfigToCssVars(
 	config: ChatUiConfig
 ): Record< string, string > {

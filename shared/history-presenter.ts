@@ -1,5 +1,11 @@
 import type { ChatMessage, ToolRun } from './types';
 
+/**
+ * Item rendered by the chat timeline.
+ *
+ * Tool entries are not direct provider messages; they are UI records built from
+ * assistant tool calls plus persisted tool result rows.
+ */
 export type HistoryTimelineEntry =
 	| {
 			type: 'message';
@@ -22,12 +28,22 @@ type ParsedToolContent = {
 	error?: string;
 };
 
+/**
+ * Checks plain JSON objects without accepting arrays.
+ *
+ * @param value Value to check.
+ */
 function isRecord( value: unknown ): value is Record< string, unknown > {
 	return (
 		value !== null && typeof value === 'object' && ! Array.isArray( value )
 	);
 }
 
+/**
+ * Returns provider tool arguments only when they have object shape.
+ *
+ * @param value Raw arguments from persisted tool call.
+ */
 function normalizeArgs( value: unknown ): Record< string, unknown > {
 	if ( isRecord( value ) ) {
 		return value;
@@ -36,6 +52,14 @@ function normalizeArgs( value: unknown ): Record< string, unknown > {
 	return {};
 }
 
+/**
+ * Reads persisted tool result content.
+ *
+ * Tool rows are stored as JSON when possible, but this also keep old or raw text
+ * rows displayable in the UI.
+ *
+ * @param content Persisted tool result content.
+ */
 function parseToolContent( content: string ): ParsedToolContent {
 	const raw = content.trim();
 	if ( raw === '' ) {
@@ -73,6 +97,14 @@ function parseToolContent( content: string ): ParsedToolContent {
 	};
 }
 
+/**
+ * Converts persisted chat messages into the UI model.
+ *
+ * It hides system messages, joins tool result rows with their assistant call,
+ * and keeps the final timeline in the same order as the input history.
+ *
+ * @param history Persisted messages in display order.
+ */
 export function presentHistory( history: ChatMessage[] ): HistoryPresentation {
 	const argsByCallId: Record< string, Record< string, unknown > > = {};
 	const namesByCallId: Record< string, string > = {};

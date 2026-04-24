@@ -11,6 +11,11 @@ import '../view.scss';
 const HISTORY_PAGE_SIZE = 80;
 const BOTTOM_THRESHOLD = 48;
 
+/**
+ * Escapes values inserted into HTML attributes in the hand-built view.
+ *
+ * @param value Raw attribute value.
+ */
 function escapeAttribute( value: string ): string {
 	return value
 		.replaceAll( '&', '&amp;' )
@@ -19,6 +24,12 @@ function escapeAttribute( value: string ): string {
 		.replaceAll( '>', '&gt;' );
 }
 
+/**
+ * Creates one text message node for the Interactivity-style frontend.
+ *
+ * @param role    Message role label.
+ * @param content Message text.
+ */
 function createMessageNode( role: string, content: string ): HTMLDivElement {
 	const item = document.createElement( 'div' );
 	item.className = `wpclaw-message wpclaw-message-${ role } wpclaw-timeline-entry`;
@@ -35,6 +46,11 @@ function createMessageNode( role: string, content: string ): HTMLDivElement {
 	return item;
 }
 
+/**
+ * Creates a visible tool run entry from the normalized timeline model.
+ *
+ * @param run Normalized tool run.
+ */
 function createToolRunNode( run: ToolRun ): HTMLDetailsElement {
 	const node = document.createElement( 'details' );
 	node.className =
@@ -60,6 +76,11 @@ function createToolRunNode( run: ToolRun ): HTMLDetailsElement {
 	return node;
 }
 
+/**
+ * Converts one timeline entry into DOM.
+ *
+ * @param entry Timeline entry from shared presenter.
+ */
 function createTimelineNode( entry: HistoryTimelineEntry ): HTMLElement {
 	if ( entry.type === 'message' ) {
 		return createMessageNode( entry.message.role, entry.message.content );
@@ -68,6 +89,11 @@ function createTimelineNode( entry: HistoryTimelineEntry ): HTMLElement {
 	return createToolRunNode( entry.run );
 }
 
+/**
+ * Checks if scroll is close enough to the newest message.
+ *
+ * @param node Scrollable message list.
+ */
 function isNearBottom( node: HTMLElement ): boolean {
 	return (
 		node.scrollHeight - node.scrollTop - node.clientHeight <=
@@ -75,12 +101,25 @@ function isNearBottom( node: HTMLElement ): boolean {
 	);
 }
 
+/**
+ * Removes rendered message/tool entries while keeping static controls.
+ *
+ * @param messagesRegion Message list container.
+ */
 function removeTimelineEntries( messagesRegion: HTMLElement ): void {
 	messagesRegion
 		.querySelectorAll( '.wpclaw-timeline-entry' )
 		.forEach( ( node ) => node.remove() );
 }
 
+/**
+ * Mounts one server-rendered Interactivity block root.
+ *
+ * This view has no React state, so it owns DOM updates and keeps request state
+ * in local variables.
+ *
+ * @param root Server-rendered block root.
+ */
 async function mountNode( root: HTMLElement ) {
 	const client = new WpClawClient( {
 		nonce: root.dataset.restNonce,

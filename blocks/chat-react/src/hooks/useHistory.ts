@@ -19,6 +19,14 @@ type UseHistoryResult = {
 	setError: ( value: string | null ) => void;
 };
 
+/**
+ * Owns paginated chat history for the React block.
+ *
+ * The hook keeps REST rows out of the UI by exposing an already presented
+ * timeline, including tool result entries.
+ *
+ * @param client REST client for the current block instance.
+ */
 export function useHistory( client: WpClawClient ): UseHistoryResult {
 	const [ timeline, setTimelineState ] = useState< HistoryTimelineEntry[] >(
 		[]

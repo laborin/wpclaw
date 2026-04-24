@@ -21,6 +21,9 @@ if (!versionPattern.test(version)) {
 	process.exit(1);
 }
 
+/**
+ * Updates one JSON file and preserve tab indentation.
+ */
 async function updateJson(relativePath, update) {
 	const filePath = resolve(rootDir, relativePath);
 	const data = JSON.parse(await readFile(filePath, 'utf8'));
@@ -28,6 +31,9 @@ async function updateJson(relativePath, update) {
 	await writeFile(filePath, `${JSON.stringify(data, null, '\t')}\n`);
 }
 
+/**
+ * Updates one text file with a caller provided transform.
+ */
 async function updateText(relativePath, update) {
 	const filePath = resolve(rootDir, relativePath);
 	const current = await readFile(filePath, 'utf8');

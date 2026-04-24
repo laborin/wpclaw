@@ -14,6 +14,14 @@ type UseChatStreamResult = {
 	send: ( payload: SendPayload ) => Promise< boolean >;
 };
 
+/**
+ * Owns send/cancel state for the composer.
+ *
+ * It returns boolean from `send` so the caller reloads history only after the
+ * server accepted and processed the user turn.
+ *
+ * @param client REST client for the current block instance.
+ */
 export function useChatStream( client: WpClawClient ): UseChatStreamResult {
 	const [ isSending, setIsSending ] = useState( false );
 	const [ error, setErrorState ] = useState< string | null >( null );

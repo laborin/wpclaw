@@ -12,6 +12,14 @@ type RootConfig = {
 	uiConfig: ChatUiConfig;
 };
 
+/**
+ * Reads server-rendered config from the block root node.
+ *
+ * Only presentation fields are read here. Agent prompt and tools stay managed by
+ * PHP settings.
+ *
+ * @param element Server-rendered block root.
+ */
 function parseConfig( element: HTMLElement ): RootConfig {
 	return {
 		placeholder: element.dataset.placeholder ?? 'Ask something...',
@@ -22,6 +30,9 @@ function parseConfig( element: HTMLElement ): RootConfig {
 	};
 }
 
+/**
+ * Mounts React chat windows on every server-rendered root.
+ */
 function mount() {
 	const nodes = document.querySelectorAll< HTMLElement >(
 		'[data-wpclaw-react-chat]'

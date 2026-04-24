@@ -17,6 +17,12 @@ export type HistoryQuery = {
 	order?: 'asc' | 'desc';
 };
 
+/**
+ * REST client shared by both block frontends.
+ *
+ * It keep WordPress nonce handling and error normalization in one place, so UI
+ * code can read `ok` and `error` without try/catch in every call.
+ */
 export class WpClawClient {
 	private readonly baseUrl: string;
 
@@ -27,6 +33,14 @@ export class WpClawClient {
 		this.nonce = config.nonce ?? this.readWpNonce();
 	}
 
+	/**
+	 * Loads one history page for the current user session.
+	 *
+	 * The server can return rows in ascending or descending order; presenters
+	 * decide how to turn those rows into the visible timeline.
+	 *
+	 * @param query Pagination and order options.
+	 */
 	public async getHistory(
 		query: HistoryQuery = {}
 	): Promise< HistoryResponse > {
@@ -49,6 +63,9 @@ export class WpClawClient {
 		);
 	}
 
+	/**
+	 * Deletes the current user chat history.
+	 */
 	public async clearHistory(): Promise< {
 		ok: boolean;
 		deleted_messages?: number;
@@ -60,6 +77,9 @@ export class WpClawClient {
 		} );
 	}
 
+	/**
+	 * Requests cancellation for the active run in the current session.
+	 */
 	public async cancelCurrentRun(): Promise< CancelResponse > {
 		return this.request< CancelResponse >( `/chat/cancel`, {
 			method: 'POST',
@@ -67,6 +87,16 @@ export class WpClawClient {
 		} );
 	}
 
+	/**
+	 * Sends one user turn.
+	 *
+	 * Prompt and tool permissions are resolved in PHP from plugin settings, not
+	 * from client payload.
+	 *
+	 * @param payload         Request body for the chat turn.
+	 * @param payload.message User message to send.
+	 * @param payload.model   Provider model selected by the block renderer.
+	 */
 	public async sendChat( payload: {
 		message: string;
 		model?: string;
@@ -77,6 +107,14 @@ export class WpClawClient {
 		} );
 	}
 
+	/**
+	 * Sends a JSON REST request and normalize WordPress or WPClaw errors.
+	 *
+	 * @param path           REST path relative to WPClaw namespace.
+	 * @param options        Request method and optional JSON body.
+	 * @param options.method HTTP method used by the request.
+	 * @param options.body   JSON body sent for non-GET requests.
+	 */
 	private async request< T >(
 		path: string,
 		options: { method: 'GET' | 'POST' | 'DELETE'; body?: unknown }
@@ -149,6 +187,9 @@ export class WpClawClient {
 		return this.failure< T >( 'Invalid response from server.' );
 	}
 
+	/**
+	 * Reads the nonce that WordPress prints for REST authenticated requests.
+	 */
 	private readWpNonce(): string | null {
 		const settings = (
 			window as Window & { wpApiSettings?: { nonce?: string } }
@@ -157,6 +198,11 @@ export class WpClawClient {
 		return settings?.nonce ?? null;
 	}
 
+	/**
+	 * Detects the WPClaw response envelope before reading `error`.
+	 *
+	 * @param payload Decoded JSON response.
+	 */
 	private hasOkFlag( payload: unknown ): boolean {
 		return (
 			payload !== null &&
@@ -166,6 +212,11 @@ export class WpClawClient {
 		);
 	}
 
+	/**
+	 * Converts WP REST native errors and WPClaw envelope errors to one shape.
+	 *
+	 * @param payload Decoded JSON response.
+	 */
 	private readWpRestError( payload: unknown ): ApiError | null {
 		if ( payload === null || typeof payload !== 'object' ) {
 			return null;
@@ -218,6 +269,13 @@ export class WpClawClient {
 		return null;
 	}
 
+	/**
+	 * Creates a typed failure payload for callers.
+	 *
+	 * @param message User-facing error message.
+	 * @param code    Stable error code.
+	 * @param status  HTTP status.
+	 */
 	private failure< T >(
 		message: string,
 		code = 'request_failed',
