@@ -4,6 +4,7 @@ import type {
 	ChatResponse,
 	ClearHistoryResponse,
 	HistoryResponse,
+	StreamEvent,
 } from './types';
 
 export type ApiClientConfig = {
@@ -108,6 +109,178 @@ export class WpClawClient {
 	}
 
 	/**
+	 * Sends one user turn and reads newline JSON stream events.
+	 *
+	 * The callback is called as soon as each event line is decoded.
+	 *
+	 * @param payload         Request body for the chat turn.
+	 * @param payload.message User message to send.
+	 * @param payload.model   Provider model selected by the block renderer.
+	 * @param onEvent         Event handler for decoded stream events.
+	 * @param signal          Optional abort signal for the active fetch.
+	 */
+	public async sendChatStream(
+		payload: {
+			message: string;
+			model?: string;
+		},
+		onEvent: ( event: StreamEvent ) => void,
+		signal?: AbortSignal
+	): Promise< ChatResponse > {
+		const headers: Record< string, string > = {
+			Accept: 'application/x-ndjson',
+			'Content-Type': 'application/json',
+		};
+
+		if ( this.nonce ) {
+			headers[ 'X-WP-Nonce' ] = this.nonce;
+		}
+
+		let response: Response;
+		try {
+			response = await fetch( `${ this.baseUrl }/chat/stream`, {
+				method: 'POST',
+				headers,
+				credentials: 'same-origin',
+				body: JSON.stringify( payload ),
+				signal,
+			} );
+		} catch ( error ) {
+			if (
+				error instanceof DOMException &&
+				error.name === 'AbortError'
+			) {
+				return this.failure< ChatResponse >(
+					'Chat request was cancelled.',
+					'request_cancelled',
+					0
+				);
+			}
+
+			return this.failure< ChatResponse >(
+				error instanceof Error
+					? error.message
+					: 'Network request failed.',
+				'network_error',
+				0
+			);
+		}
+
+		if ( ! response.ok ) {
+			return this.responseFailure< ChatResponse >( response );
+		}
+
+		if ( ! response.body ) {
+			return this.failure< ChatResponse >(
+				'Streaming response is not available.',
+				'stream_unavailable',
+				response.status
+			);
+		}
+
+		const reader = response.body.getReader();
+		const decoder = new TextDecoder();
+		const events: StreamEvent[] = [];
+		let buffer = '';
+		let sessionId: number | undefined;
+		let streamError: ApiError | null = null;
+
+		const readLine = ( line: string ) => {
+			const trimmed = line.trim();
+			if ( trimmed === '' ) {
+				return;
+			}
+
+			let event: StreamEvent;
+			try {
+				event = JSON.parse( trimmed ) as StreamEvent;
+			} catch {
+				streamError = {
+					code: 'invalid_stream_response',
+					message: 'Invalid streaming response from server.',
+					status: 502,
+				};
+				return;
+			}
+
+			events.push( event );
+			if (
+				event.type === 'session_ready' &&
+				typeof event.session_id === 'number'
+			) {
+				sessionId = event.session_id;
+			}
+
+			if ( event.type === 'error' ) {
+				streamError = {
+					code:
+						typeof event.code === 'string'
+							? event.code
+							: 'stream_error',
+					message:
+						typeof event.message === 'string'
+							? event.message
+							: 'Chat request failed.',
+					status: 500,
+				};
+			}
+
+			onEvent( event );
+		};
+
+		try {
+			for (;;) {
+				const { done, value } = await reader.read();
+				if ( done ) {
+					break;
+				}
+
+				buffer += decoder.decode( value, { stream: true } );
+				const lines = buffer.split( '\n' );
+				buffer = lines.pop() ?? '';
+				lines.forEach( readLine );
+			}
+		} catch ( error ) {
+			if (
+				error instanceof DOMException &&
+				error.name === 'AbortError'
+			) {
+				return this.failure< ChatResponse >(
+					'Chat request was cancelled.',
+					'request_cancelled',
+					0
+				);
+			}
+
+			return this.failure< ChatResponse >(
+				error instanceof Error
+					? error.message
+					: 'Network stream failed.',
+				'network_error',
+				0
+			);
+		}
+
+		buffer += decoder.decode();
+		readLine( buffer );
+
+		if ( streamError !== null ) {
+			return {
+				ok: false,
+				session_id: sessionId,
+				events,
+				error: streamError,
+			};
+		}
+
+		return {
+			ok: true,
+			session_id: sessionId,
+			events,
+		};
+	}
+
+	/**
 	 * Sends a JSON REST request and normalize WordPress or WPClaw errors.
 	 *
 	 * @param path           REST path relative to WPClaw namespace.
@@ -185,6 +358,30 @@ export class WpClawClient {
 		}
 
 		return this.failure< T >( 'Invalid response from server.' );
+	}
+
+	private async responseFailure< T >( response: Response ): Promise< T > {
+		let payload: unknown = null;
+		try {
+			payload = await response.json();
+		} catch {
+			payload = null;
+		}
+
+		const normalizedError = this.readWpRestError( payload );
+		if ( normalizedError !== null ) {
+			return this.failure< T >(
+				normalizedError.message,
+				normalizedError.code,
+				normalizedError.status
+			);
+		}
+
+		return this.failure< T >(
+			`Request failed with status ${ response.status }.`,
+			'request_failed',
+			response.status
+		);
 	}
 
 	/**

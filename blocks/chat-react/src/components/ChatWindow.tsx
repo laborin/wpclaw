@@ -40,6 +40,10 @@ function ChatWindow( {
 	const stream = useChatStream( client );
 	const messagesRef = useRef< HTMLDivElement >( null );
 	const [ stickToBottom, setStickToBottom ] = useState( true );
+	const visibleTimeline = useMemo(
+		() => [ ...history.timeline, ...stream.liveTimeline ],
+		[ history.timeline, stream.liveTimeline ]
+	);
 
 	const windowStyle = useMemo( () => {
 		const uiVars = uiConfigToCssVars( uiConfig );
@@ -59,22 +63,20 @@ function ChatWindow( {
 		}
 		setStickToBottom( true );
 
-		const ok = await stream.send( {
+		await stream.send( {
 			message: content,
 			model,
 		} );
 
-		if ( ! ok ) {
-			return;
-		}
-
 		await history.reload();
+		stream.clearLive();
 	};
 
 	const clearHistory = async () => {
 		await history.clear();
 		history.setError( null );
 		stream.setError( null );
+		stream.clearLive();
 	};
 
 	const loadOlder = async () => {
@@ -120,7 +122,7 @@ function ChatWindow( {
 		if ( stickToBottom ) {
 			node.scrollTop = node.scrollHeight;
 		}
-	}, [ history.timeline.length, stickToBottom ] );
+	}, [ visibleTimeline.length, stickToBottom ] );
 
 	const jumpToLatest = () => {
 		const node = messagesRef.current;
@@ -154,14 +156,14 @@ function ChatWindow( {
 			</header>
 			<div className="wpclaw-message-list-wrap">
 				<MessageList
-					entries={ history.timeline }
+					entries={ visibleTimeline }
 					listRef={ messagesRef }
 					onScroll={ onScroll }
 					hasMore={ history.hasMore }
 					loadingOlder={ history.loadingOlder }
 					onLoadOlder={ () => void loadOlder() }
 				/>
-				{ ! stickToBottom && history.timeline.length > 0 ? (
+				{ ! stickToBottom && visibleTimeline.length > 0 ? (
 					<button
 						type="button"
 						className="wpclaw-jump-latest"

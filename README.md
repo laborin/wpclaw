@@ -6,13 +6,20 @@ This prototype is evolving from a simple chat experiment into an OpenClaw-style 
 
 ## What is implemented
 - session and message persistence (`wpclaw_sessions`, `wpclaw_messages`)
-- REST endpoints: `/hello`, `/chat`, `/history`, `/chat/cancel`
+- REST endpoints: `/hello`, `/chat`, `/chat/stream`, `/history`, `/chat/cancel`
 - provider layer with streaming parser and cancellation support
 - tool registry + schema validation + capability checks
 - settings page for provider, model, system prompt, role, and tool controls
-- dynamic Gutenberg blocks:
-  - `wpclaw/chat-react`
-  - `wpclaw/chat-interactivity`
+- dynamic Gutenberg block: `wpclaw/chat-react`
+- streaming responses
+
+## To-do
+- Multi-agent support
+- Support for basic OpenClaw-style identity and memory files, database backed
+- Telegram bot support
+- A more complete set of tools
+
+There are two Gutenberg blocks in the source but only the React one is maintained. The old Interactivity API block source remains in the repository as deprecated prototype code. It was an early attempt to play with WordPress Interactivity API.
 
 ## Install from a release ZIP
 1. Download the `wpclaw-<tag>.zip` asset from a GitHub release.
@@ -27,7 +34,7 @@ This prototype is evolving from a simple chat experiment into an OpenClaw-style 
 ## Development commands
 - Build all blocks: `npm run build`
 - Watch React block: `npm run start:chat-react`
-- Watch Interactivity block: `npm run start:chat-interactivity`
+- Watch deprecated Interactivity block: `npm run start:chat-interactivity`
 - JS lint: `npm run lint:js`
 - Bump version: `npm run version:bump -- 0.2.0`
 

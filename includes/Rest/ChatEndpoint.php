@@ -58,6 +58,88 @@ final class ChatEndpoint
      */
     public function handle(mixed $request): array
     {
+        $run = $this->prepare_run($request);
+        if (($run['ok'] ?? false) !== true) {
+            return $run;
+        }
+
+        $events = [];
+        try {
+            foreach ($this->run_events($run['context'], (string) $run['message']) as $event) {
+                $events[] = $event;
+            }
+        } catch (\Throwable $exception) {
+            return $this->runner_exception_response($exception);
+        }
+
+        return [
+            'ok' => true,
+            'session_id' => (int) $run['session_id'],
+            'events' => $events,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function handle_stream(mixed $request): array
+    {
+        $run = $this->prepare_run($request);
+        if (($run['ok'] ?? false) !== true) {
+            return $run;
+        }
+
+        return [
+            'ok' => true,
+            'session_id' => (int) $run['session_id'],
+            'events' => $this->stream_events($run['context'], (string) $run['message']),
+        ];
+    }
+
+    /**
+     * @return iterable<int, array<string, mixed>>
+     */
+    private function run_events(Context $context, string $message): iterable
+    {
+        foreach (call_user_func($this->runner, $context, $message) as $event) {
+            if (is_array($event)) {
+                yield $event;
+            }
+        }
+    }
+
+    /**
+     * @return iterable<int, array<string, mixed>>
+     */
+    private function stream_events(Context $context, string $message): iterable
+    {
+        try {
+            yield from $this->run_events($context, $message);
+        } catch (\Throwable $exception) {
+            $response = $this->runner_exception_response($exception);
+            $error = isset($response['error']) && is_array($response['error'])
+                ? $response['error']
+                : [];
+
+            yield [
+                'type' => 'error',
+                'code' => (string) ($error['code'] ?? 'chat_runtime_error'),
+                'message' => (string) ($error['message'] ?? 'Chat request failed.'),
+            ];
+
+            yield [
+                'type' => 'done',
+                'stop_reason' => 'error',
+                'total_iterations' => 0,
+            ];
+        }
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function prepare_run(mixed $request): array
+    {
         $access = $this->guard->require_chat_access();
         if (($access['ok'] ?? false) !== true) {
             return [
@@ -132,21 +214,11 @@ final class ChatEndpoint
             $systemPrompt
         );
 
-        $events = [];
-        try {
-            foreach (call_user_func($this->runner, $context, $message) as $event) {
-                if (is_array($event)) {
-                    $events[] = $event;
-                }
-            }
-        } catch (\Throwable $exception) {
-            return $this->runner_exception_response($exception);
-        }
-
         return [
             'ok' => true,
             'session_id' => $sessionId,
-            'events' => $events,
+            'context' => $context,
+            'message' => $message,
         ];
     }
 

@@ -151,6 +151,16 @@ final class Controller
 
         register_rest_route(
             'wpclaw/v1',
+            '/chat/stream',
+            [
+                'methods' => 'POST',
+                'permission_callback' => [$this, 'can_access'],
+                'callback' => [$this, 'chat_stream'],
+            ]
+        );
+
+        register_rest_route(
+            'wpclaw/v1',
             '/history',
             [
                 [
@@ -205,6 +215,21 @@ final class Controller
         $result = $this->chatEndpoint->handle($request);
 
         return $this->respond($result, $this->status_from_result($result));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function chat_stream(mixed $request): mixed
+    {
+        $result = $this->chatEndpoint->handle_stream($request);
+        if (($result['ok'] ?? false) !== true) {
+            return $this->respond($result, $this->status_from_result($result));
+        }
+
+        $this->stream_ndjson($result);
+
+        return null;
     }
 
     /**
@@ -266,5 +291,62 @@ final class Controller
         $payload['_status'] = $status;
 
         return $payload;
+    }
+
+    /**
+     * @param array<string, mixed> $payload
+     */
+    private function stream_ndjson(array $payload): void
+    {
+        $this->send_stream_headers();
+
+        $events = $payload['events'] ?? [];
+        if (is_iterable($events)) {
+            foreach ($events as $event) {
+                if (is_array($event)) {
+                    $this->write_stream_event($event);
+                }
+            }
+        }
+
+        exit;
+    }
+
+    private function send_stream_headers(): void
+    {
+        @ini_set('zlib.output_compression', '0');
+
+        if (! headers_sent()) {
+            if (function_exists('status_header')) {
+                status_header(200);
+            }
+
+            header('Content-Type: application/x-ndjson; charset=utf-8');
+            header('Cache-Control: no-cache, no-transform');
+            header('X-Accel-Buffering: no');
+        }
+
+        while (ob_get_level() > 0) {
+            if (! @ob_end_flush()) {
+                break;
+            }
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $event
+     */
+    private function write_stream_event(array $event): void
+    {
+        $json = function_exists('wp_json_encode')
+            ? wp_json_encode($event)
+            : json_encode($event);
+
+        if (! is_string($json)) {
+            return;
+        }
+
+        echo $json . "\n";
+        flush();
     }
 }

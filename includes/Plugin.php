@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace WPClaw;
 
-use WPClaw\Block\InteractivityRenderer;
 use WPClaw\Block\ReactRenderer;
 use WPClaw\Block\Registration as BlockRegistration;
 use WPClaw\Rest\Controller;
@@ -65,8 +64,7 @@ final class Plugin
         }
 
         $this->blockRegistration = $blockRegistration ?? new BlockRegistration(
-            new ReactRenderer($roleGate),
-            new InteractivityRenderer($roleGate)
+            new ReactRenderer($roleGate)
         );
     }
 
